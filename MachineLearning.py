@@ -218,12 +218,10 @@ class Ui_MainWindow(object):
         self.label_6 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_6.setGeometry(QtCore.QRect(10, 230, 55, 16))
         self.label_6.setObjectName("label_6")
-        self.blance1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.blance1.setGeometry(QtCore.QRect(100, 230, 41, 16))
-        self.blance1.setObjectName("blance1")
-        self.blance0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.blance0.setGeometry(QtCore.QRect(150, 230, 61, 20))
-        self.blance0.setObjectName("blance0")
+        self.blance = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.blance.setGeometry(QtCore.QRect(100, 230, 41, 16))
+        self.blance.setObjectName("blance")
+
 
         self.label_7 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_7.setGeometry(QtCore.QRect(10, 270, 91, 16))
@@ -258,12 +256,10 @@ class Ui_MainWindow(object):
         self.label_10 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_10.setGeometry(QtCore.QRect(10, 390, 81, 16))
         self.label_10.setObjectName("label_10")
-        self.day1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.day1.setGeometry(QtCore.QRect(100, 390, 41, 16))
-        self.day1.setObjectName("day1")
-        self.day0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.day0.setGeometry(QtCore.QRect(150, 390, 61, 20))
-        self.day0.setObjectName("day0")
+        self.day = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.day.setGeometry(QtCore.QRect(100, 390, 41, 16))
+        self.day.setObjectName("day")
+
 
         self.label_12 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_12.setGeometry(QtCore.QRect(10, 430, 71, 16))
@@ -278,22 +274,18 @@ class Ui_MainWindow(object):
         self.label_11 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_11.setGeometry(QtCore.QRect(10, 470, 31, 16))
         self.label_11.setObjectName("label_11")
-        self.duration1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.duration1.setGeometry(QtCore.QRect(100, 470, 41, 16))
-        self.duration1.setObjectName("ho1")
-        self.duration0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.duration0.setGeometry(QtCore.QRect(150, 470, 61, 20))
-        self.duration0.setObjectName("ho0")
+        self.duration = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.duration.setGeometry(QtCore.QRect(100, 470, 41, 16))
+        self.duration.setObjectName("duration")
+
 
         self.label_13 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_13.setGeometry(QtCore.QRect(10, 510, 55, 16))
         self.label_13.setObjectName("label_13")
-        self.campaign1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.campaign1.setGeometry(QtCore.QRect(100, 510, 41, 16))
-        self.campaign1.setObjectName("campaign1")
-        self.campaign0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.campaign0.setGeometry(QtCore.QRect(150, 510, 61, 20))
-        self.campaign0.setObjectName("campaign0")
+        self.campaign = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.campaign.setGeometry(QtCore.QRect(100, 510, 41, 16))
+        self.campaign.setObjectName("campaign")
+
 
         self.label_14 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_14.setGeometry(QtCore.QRect(10, 550, 55, 16))
@@ -417,7 +409,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Nhom8:RandomForest"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Nhóm 8:RandomForest"))
         self.groupBox.setTitle(_translate("MainWindow", "Dự đoán rủi ro tài chính"))
         self.label.setText(_translate("MainWindow", "Job:"))
 
@@ -425,7 +417,7 @@ class Ui_MainWindow(object):
         self.nu.setText(_translate("MainWindow", "No"))
 
         self.label_2.setText(_translate("MainWindow", "Age:"))
-        self.age.setSpecialValueText("43")
+        self.age.setSpecialValueText("100")
         
         self.label_3.setText(_translate("MainWindow", "MARITUAL:"))
         self.maritual1.setText(_translate("MainWindow", "Yes"))
@@ -440,8 +432,7 @@ class Ui_MainWindow(object):
         self.default0.setText(_translate("MainWindow", "No"))
 
         self.label_6.setText(_translate("MainWindow", "BLANCE:"))
-        self.blance1.setText(_translate("MainWindow", "Yes"))
-        self.blance0.setText(_translate("MainWindow", "No"))
+        self.blance.setSpecialValueText("100")
 
         self.label_7.setText(_translate("MainWindow", "HOUSING:"))
         self.housing1.setText(_translate("MainWindow", "Yes"))
@@ -456,20 +447,17 @@ class Ui_MainWindow(object):
         self.contact0.setText(_translate("MainWindow", "No"))
 
         self.label_10.setText(_translate("MainWindow", "DAY:"))
-        self.day1.setText(_translate("MainWindow", "Yes"))
-        self.day0.setText(_translate("MainWindow", "No"))
+        self.day.setSpecialValueText("31")
         
         self.label_12.setText(_translate("MainWindow", "MONTH:"))
         self.month1.setText(_translate("MainWindow", "Yes"))
         self.month0.setText(_translate("MainWindow", "No"))
 
         self.label_11.setText(_translate("MainWindow", "DURATION:"))
-        self.duration1.setText(_translate("MainWindow", "Yes"))
-        self.duration0.setText(_translate("MainWindow", "No"))
+        self.duration.setSpecialValueText("100")
 
         self.label_13.setText(_translate("MainWindow", "CAMPAIGN:"))
-        self.campaign1.setText(_translate("MainWindow", "Yes"))
-        self.campaign0.setText(_translate("MainWindow", "No"))
+        self.campaign.setSpecialValueText("100")
 
         self.label_14.setText(_translate("MainWindow", "PREVIOUS:"))
         self.previous1.setText(_translate("MainWindow", "Yes"))
@@ -526,54 +514,29 @@ class Ui_MainWindow(object):
         self.recallScore.setPlainText(r)
 
     def chandoan(self):
-        gioitinh = 0;
-        agei = 0;
-        maritual = 0;
-        education = 0;
-        default = 0;
-        blance = 0;
-        housing = 0;
-        loan = 0;
-        contact = 0;
-        day = 0;
-        uongruou = 0;
-        ho = 0;
-        campaign = 0;
-        previous = 0;
-        deposit = 0
-        if self.nam.isChecked() == True:         gioitinh = 1
-        if self.nu.isChecked() == True:          gioitinh = 0
-        if self.maritual1.isChecked() == True:   maritual = 1
-        if self.maritual0.isChecked() == True:   maritual = 0
-        if self.education1.isChecked() == True: education = 1
-        if self.education0.isChecked() == True: education = 0
-        if self.default1.isChecked() == True:     default = 1
-        if self.default0.isChecked() == True:     default = 0
-        if self.blance1.isChecked() == True:      blance = 1
-        if self.blance0.isChecked() == True:      blance = 0
-        if self.housing1.isChecked() == True: housing = 1
-        if self.housing0.isChecked() == True: housing = 0
-        if self.loan1.isChecked() == True:     loan = 1
-        if self.loan0.isChecked() == True:     loan = 0
-        if self.contact1.isChecked() == True:      contact = 1
-        if self.contact0.isChecked() == True:      contact = 0
-        if self.day1.isChecked() == True:  day = 1
-        if self.day0.isChecked() == True:  day = 0
-        if self.month1.isChecked() == True:     uongruou = 1
-        if self.month0.isChecked() == True:     uongruou = 0
-        if self.ho1.isChecked() == True:         ho = 1
-        if self.ho0.isChecked() == True:         ho = 0
-        if self.campaign1.isChecked() == True:     campaign = 1
-        if self.campaign0.isChecked() == True:     campaign = 0
-        if self.previous1.isChecked() == True:    previous = 1
-        if self.previous0.isChecked() == True:    previous = 0
-        if self.deposit1.isChecked() == True:    deposit = 1
-        if self.deposit0.isChecked() == True:    deposit = 0
-        agei = int(self.age.text()) - 43
-        if agei < 0: agei = 0
+        gioitinh = 1 if self.nam.isChecked() else 0
+        maritual = 1 if self.maritual1.isChecked() else 0
+        education = 1 if self.education1.isChecked() else 0
+        default = 1 if self.default1.isChecked() else 0
+        housing = 1 if self.housing1.isChecked() else 0
+        loan = 1 if self.loan1.isChecked() else 0
+        contact = 1 if self.contact1.isChecked() else 0
+        month = 1 if self.month1.isChecked() else 0
+        previous = 1 if self.previous1.isChecked() else 0
+        deposit = 1 if self.deposit1.isChecked() else 0
+
+        def get_valid_value(value):
+            return max(int(value) - 100, 0)
+
+        agei = get_valid_value(self.age.text())
+        blancei = get_valid_value(self.blance.text())
+        dayi = get_valid_value(self.day.text())
+        durationi = get_valid_value(self.duration.text())
+        campaigni = get_valid_value(self.campaign.text())
+
         chandoann = ''
         predict = clf.predict([[gioitinh, agei, maritual, education, default, blance, housing, loan, contact,
-                                day, uongruou, ho, campaign, previous, deposit]])
+                                dayi, month, durationi, campaigni, previous, deposit]])
         if (predict == [1]):
             chandoann = "Dự đoán : \n Người này rủi ro tài chính"
         else:
