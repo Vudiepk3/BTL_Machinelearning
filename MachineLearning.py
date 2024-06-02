@@ -159,11 +159,11 @@ class show_importance(FigureCanvas):
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(980, 882)
+        MainWindow.resize(1510, 882)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.groupBox = QtWidgets.QGroupBox(parent=self.centralwidget)
-        self.groupBox.setGeometry(QtCore.QRect(1010, 20, 231, 791))
+        self.groupBox.setGeometry(QtCore.QRect(1010, 20, 231, 791))#dieu chinh vi tri x = 1010 thanh 1210 neu man hinh co kich thic lon
         font = QtGui.QFont()
         font.setPointSize(8)
         self.groupBox.setFont(font)
@@ -177,132 +177,148 @@ class Ui_MainWindow(object):
         self.nu = QtWidgets.QCheckBox(parent=self.groupBox)
         self.nu.setGeometry(QtCore.QRect(150, 30, 51, 20))
         self.nu.setObjectName("nu")
+
         self.label_2 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_2.setGeometry(QtCore.QRect(10, 70, 41, 21))
         self.label_2.setObjectName("label_2")
-        self.tuoi = QtWidgets.QSpinBox(parent=self.groupBox)
-        self.tuoi.setGeometry(QtCore.QRect(100, 70, 42, 22))
-        self.tuoi.setObjectName("tuoi")
+        self.age = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.age.setGeometry(QtCore.QRect(100, 70, 42, 22))
+        self.age.setObjectName("age")
+
         self.label_3 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_3.setGeometry(QtCore.QRect(10, 110, 71, 16))
         self.label_3.setObjectName("label_3")
-        self.hutthuoc1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.hutthuoc1.setGeometry(QtCore.QRect(100, 110, 41, 16))
-        self.hutthuoc1.setObjectName("hutthuoc1")
-        self.hutthuoc0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.hutthuoc0.setGeometry(QtCore.QRect(150, 110, 61, 20))
-        self.hutthuoc0.setObjectName("hutthuoc0")
+        self.maritual1 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.maritual1.setGeometry(QtCore.QRect(100, 110, 41, 16))
+        self.maritual1.setObjectName("maritual1")
+        self.maritual0 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.maritual0.setGeometry(QtCore.QRect(150, 110, 61, 20))
+        self.maritual0.setObjectName("maritual0")
+
         self.label_4 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_4.setGeometry(QtCore.QRect(10, 150, 91, 16))
         self.label_4.setObjectName("label_4")
-        self.ngontayvang1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.ngontayvang1.setGeometry(QtCore.QRect(100, 150, 41, 16))
-        self.ngontayvang1.setObjectName("ngontayvang1")
-        self.ngontayvang0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.ngontayvang0.setGeometry(QtCore.QRect(150, 150, 61, 20))
-        self.ngontayvang0.setObjectName("ngontayvang0")
+        self.education1 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.education1.setGeometry(QtCore.QRect(100, 150, 41, 16))
+        self.education1.setObjectName("education1")
+        self.education0 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.education0.setGeometry(QtCore.QRect(150, 150, 61, 20))
+        self.education0.setObjectName("education0")
+
         self.label_5 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_5.setGeometry(QtCore.QRect(10, 190, 55, 16))
         self.label_5.setObjectName("label_5")
-        self.lolang1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.lolang1.setGeometry(QtCore.QRect(100, 190, 41, 16))
-        self.lolang1.setObjectName("lolang1")
-        self.lolang0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.lolang0.setGeometry(QtCore.QRect(150, 190, 61, 20))
-        self.lolang0.setObjectName("lolang0")
-        self.benhmantinh1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.benhmantinh1.setGeometry(QtCore.QRect(100, 270, 41, 16))
-        self.benhmantinh1.setObjectName("benhmantinh1")
-        self.benhmantinh0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.benhmantinh0.setGeometry(QtCore.QRect(150, 270, 61, 20))
-        self.benhmantinh0.setObjectName("benhmantinh0")
-        self.metmoi1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.metmoi1.setGeometry(QtCore.QRect(100, 310, 41, 16))
-        self.metmoi1.setObjectName("metmoi1")
-        self.metmoi0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.metmoi0.setGeometry(QtCore.QRect(150, 310, 61, 20))
-        self.metmoi0.setObjectName("metmoi0")
-        self.diung1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.diung1.setGeometry(QtCore.QRect(100, 350, 41, 16))
-        self.diung1.setObjectName("diung1")
-        self.diung0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.diung0.setGeometry(QtCore.QRect(150, 350, 61, 20))
-        self.diung0.setObjectName("diung0")
-        self.thokhokhe1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.thokhokhe1.setGeometry(QtCore.QRect(100, 390, 41, 16))
-        self.thokhokhe1.setObjectName("thokhokhe1")
-        self.thokhokhe0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.thokhokhe0.setGeometry(QtCore.QRect(150, 390, 61, 20))
-        self.thokhokhe0.setObjectName("thokhokhe0")
-        self.unguou1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.unguou1.setGeometry(QtCore.QRect(100, 430, 41, 16))
-        self.unguou1.setObjectName("unguou1")
-        self.unguou0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.unguou0.setGeometry(QtCore.QRect(150, 430, 61, 20))
-        self.unguou0.setObjectName("unguou0")
-        self.ho1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.ho1.setGeometry(QtCore.QRect(100, 470, 41, 16))
-        self.ho1.setObjectName("ho1")
-        self.ho0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.ho0.setGeometry(QtCore.QRect(150, 470, 61, 20))
-        self.ho0.setObjectName("ho0")
-        self.ketqua = QtWidgets.QTextEdit(parent=self.groupBox)
-        self.ketqua.setGeometry(QtCore.QRect(20, 690, 191, 71))
-        self.ketqua.setObjectName("ketqua")
+        self.default1 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.default1.setGeometry(QtCore.QRect(100, 190, 41, 16))
+        self.default1.setObjectName("default1")
+        self.default0 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.default0.setGeometry(QtCore.QRect(150, 190, 61, 20))
+        self.default0.setObjectName("default0")
+
         self.label_6 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_6.setGeometry(QtCore.QRect(10, 230, 55, 16))
         self.label_6.setObjectName("label_6")
-        self.apluc1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.apluc1.setGeometry(QtCore.QRect(100, 230, 41, 16))
-        self.apluc1.setObjectName("apluc1")
-        self.apluc0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.apluc0.setGeometry(QtCore.QRect(150, 230, 61, 20))
-        self.apluc0.setObjectName("apluc0")
+        self.blance1 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.blance1.setGeometry(QtCore.QRect(100, 230, 41, 16))
+        self.blance1.setObjectName("blance1")
+        self.blance0 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.blance0.setGeometry(QtCore.QRect(150, 230, 61, 20))
+        self.blance0.setObjectName("blance0")
+
         self.label_7 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_7.setGeometry(QtCore.QRect(10, 270, 91, 16))
         self.label_7.setObjectName("label_7")
+        self.housing1 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.housing1.setGeometry(QtCore.QRect(100, 270, 41, 16))
+        self.housing1.setObjectName("housing1")
+        self.housing0 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.housing0.setGeometry(QtCore.QRect(150, 270, 61, 20))
+        self.housing0.setObjectName("housing0")
+
         self.label_8 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_8.setGeometry(QtCore.QRect(10, 310, 55, 16))
         self.label_8.setObjectName("label_8")
+        self.loan1 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.loan1.setGeometry(QtCore.QRect(100, 310, 41, 16))
+        self.loan1.setObjectName("loan1")
+        self.loan0 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.loan0.setGeometry(QtCore.QRect(150, 310, 61, 20))
+        self.loan0.setObjectName("loan0")
+
         self.label_9 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_9.setGeometry(QtCore.QRect(10, 350, 55, 16))
         self.label_9.setObjectName("label_9")
+        self.contact1 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.contact1.setGeometry(QtCore.QRect(100, 350, 41, 16))
+        self.contact1.setObjectName("contact1")
+        self.contact0 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.contact0.setGeometry(QtCore.QRect(150, 350, 61, 20))
+        self.contact0.setObjectName("contact0")
+
         self.label_10 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_10.setGeometry(QtCore.QRect(10, 390, 81, 16))
         self.label_10.setObjectName("label_10")
+        self.day1 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.day1.setGeometry(QtCore.QRect(100, 390, 41, 16))
+        self.day1.setObjectName("day1")
+        self.day0 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.day0.setGeometry(QtCore.QRect(150, 390, 61, 20))
+        self.day0.setObjectName("day0")
+
         self.label_12 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_12.setGeometry(QtCore.QRect(10, 430, 71, 16))
         self.label_12.setObjectName("label_12")
+        self.month1 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.month1.setGeometry(QtCore.QRect(100, 430, 41, 16))
+        self.month1.setObjectName("month1")
+        self.month0 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.month0.setGeometry(QtCore.QRect(150, 430, 61, 20))
+        self.month0.setObjectName("month0")
+
         self.label_11 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_11.setGeometry(QtCore.QRect(10, 470, 31, 16))
         self.label_11.setObjectName("label_11")
+        self.duration1 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.duration1.setGeometry(QtCore.QRect(100, 470, 41, 16))
+        self.duration1.setObjectName("ho1")
+        self.duration0 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.duration0.setGeometry(QtCore.QRect(150, 470, 61, 20))
+        self.duration0.setObjectName("ho0")
+
         self.label_13 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_13.setGeometry(QtCore.QRect(10, 510, 55, 16))
         self.label_13.setObjectName("label_13")
-        self.khotho1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.khotho1.setGeometry(QtCore.QRect(100, 510, 41, 16))
-        self.khotho1.setObjectName("khotho1")
-        self.khotho0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.khotho0.setGeometry(QtCore.QRect(150, 510, 61, 20))
-        self.khotho0.setObjectName("khotho0")
+        self.campaign1 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.campaign1.setGeometry(QtCore.QRect(100, 510, 41, 16))
+        self.campaign1.setObjectName("campaign1")
+        self.campaign0 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.campaign0.setGeometry(QtCore.QRect(150, 510, 61, 20))
+        self.campaign0.setObjectName("campaign0")
+
         self.label_14 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_14.setGeometry(QtCore.QRect(10, 550, 55, 16))
         self.label_14.setObjectName("label_14")
-        self.khonuot1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.khonuot1.setGeometry(QtCore.QRect(100, 550, 41, 16))
-        self.khonuot1.setObjectName("khonuot1")
-        self.khonuot0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.khonuot0.setGeometry(QtCore.QRect(150, 550, 61, 20))
-        self.khonuot0.setObjectName("khonuot0")
+        self.previous1 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.previous1.setGeometry(QtCore.QRect(100, 550, 41, 16))
+        self.previous1.setObjectName("previous1")
+        self.previous0 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.previous0.setGeometry(QtCore.QRect(150, 550, 61, 20))
+        self.previous0.setObjectName("previous0")
+
         self.label_15 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_15.setGeometry(QtCore.QRect(10, 590, 61, 16))
         self.label_15.setObjectName("label_15")
-        self.daunguc0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.daunguc0.setGeometry(QtCore.QRect(150, 590, 61, 20))
-        self.daunguc0.setObjectName("daunguc0")
-        self.daunguc1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.daunguc1.setGeometry(QtCore.QRect(100, 590, 41, 16))
-        self.daunguc1.setObjectName("daunguc1")
+        self.deposit0 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.deposit0.setGeometry(QtCore.QRect(150, 590, 61, 20))
+        self.deposit0.setObjectName("deposit0")
+        self.deposit1 = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.deposit1.setGeometry(QtCore.QRect(100, 590, 41, 16))
+        self.deposit1.setObjectName("deposit1")
+
+        self.ketqua = QtWidgets.QTextEdit(parent=self.groupBox)
+        self.ketqua.setGeometry(QtCore.QRect(20, 690, 191, 71))
+        self.ketqua.setObjectName("ketqua")
+        
         self.chuandoan = QtWidgets.QPushButton(parent=self.groupBox)
         self.chuandoan.setGeometry(QtCore.QRect(70, 630, 93, 28))
         self.chuandoan.setObjectName("chuandoan")
@@ -386,7 +402,7 @@ class Ui_MainWindow(object):
         self.label_26.setObjectName("label_26")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1200, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1100, 26))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)
@@ -404,51 +420,71 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Nhom8:RandomForest"))
         self.groupBox.setTitle(_translate("MainWindow", "Dự đoán rủi ro tài chính"))
         self.label.setText(_translate("MainWindow", "Job:"))
+
         self.nam.setText(_translate("MainWindow", "Yes"))
         self.nu.setText(_translate("MainWindow", "No"))
+
         self.label_2.setText(_translate("MainWindow", "Age:"))
+        self.age.setSpecialValueText("43")
+        
         self.label_3.setText(_translate("MainWindow", "MARITUAL:"))
-        self.hutthuoc1.setText(_translate("MainWindow", "Yes"))
-        self.hutthuoc0.setText(_translate("MainWindow", "No"))
+        self.maritual1.setText(_translate("MainWindow", "Yes"))
+        self.maritual0.setText(_translate("MainWindow", "No"))
+
         self.label_4.setText(_translate("MainWindow", "EDUCATION:"))
-        self.ngontayvang1.setText(_translate("MainWindow", "Yes"))
-        self.ngontayvang0.setText(_translate("MainWindow", "No"))
+        self.education1.setText(_translate("MainWindow", "Yes"))
+        self.education0.setText(_translate("MainWindow", "No"))
+
         self.label_5.setText(_translate("MainWindow", "DEFAULT:"))
-        self.lolang1.setText(_translate("MainWindow", "Yes"))
-        self.lolang0.setText(_translate("MainWindow", "No"))
-        self.benhmantinh1.setText(_translate("MainWindow", "Yes"))
-        self.benhmantinh0.setText(_translate("MainWindow", "No"))
-        self.metmoi1.setText(_translate("MainWindow", "Yes"))
-        self.metmoi0.setText(_translate("MainWindow", "No"))
-        self.diung1.setText(_translate("MainWindow", "Yes"))
-        self.diung0.setText(_translate("MainWindow", "No"))
-        self.thokhokhe1.setText(_translate("MainWindow", "Yes"))
-        self.thokhokhe0.setText(_translate("MainWindow", "No"))
-        self.unguou1.setText(_translate("MainWindow", "Yes"))
-        self.unguou0.setText(_translate("MainWindow", "No"))
-        self.ho1.setText(_translate("MainWindow", "Yes"))
-        self.ho0.setText(_translate("MainWindow", "No"))
+        self.default1.setText(_translate("MainWindow", "Yes"))
+        self.default0.setText(_translate("MainWindow", "No"))
+
         self.label_6.setText(_translate("MainWindow", "BLANCE:"))
-        self.apluc1.setText(_translate("MainWindow", "Yes"))
-        self.apluc0.setText(_translate("MainWindow", "No"))
+        self.blance1.setText(_translate("MainWindow", "Yes"))
+        self.blance0.setText(_translate("MainWindow", "No"))
+
         self.label_7.setText(_translate("MainWindow", "HOUSING:"))
+        self.housing1.setText(_translate("MainWindow", "Yes"))
+        self.housing0.setText(_translate("MainWindow", "No"))
+
         self.label_8.setText(_translate("MainWindow", "LOAN:"))
+        self.loan1.setText(_translate("MainWindow", "Yes"))
+        self.loan0.setText(_translate("MainWindow", "No"))
+
         self.label_9.setText(_translate("MainWindow", "CONTACT:"))
+        self.contact1.setText(_translate("MainWindow", "Yes"))
+        self.contact0.setText(_translate("MainWindow", "No"))
+
         self.label_10.setText(_translate("MainWindow", "DAY:"))
+        self.day1.setText(_translate("MainWindow", "Yes"))
+        self.day0.setText(_translate("MainWindow", "No"))
+        
         self.label_12.setText(_translate("MainWindow", "MONTH:"))
+        self.month1.setText(_translate("MainWindow", "Yes"))
+        self.month0.setText(_translate("MainWindow", "No"))
+
         self.label_11.setText(_translate("MainWindow", "DURATION:"))
+        self.duration1.setText(_translate("MainWindow", "Yes"))
+        self.duration0.setText(_translate("MainWindow", "No"))
+
         self.label_13.setText(_translate("MainWindow", "CAMPAIGN:"))
-        self.khotho1.setText(_translate("MainWindow", "Yes"))
-        self.khotho0.setText(_translate("MainWindow", "No"))
+        self.campaign1.setText(_translate("MainWindow", "Yes"))
+        self.campaign0.setText(_translate("MainWindow", "No"))
+
         self.label_14.setText(_translate("MainWindow", "PREVIOUS:"))
-        self.khonuot1.setText(_translate("MainWindow", "Yes"))
-        self.khonuot0.setText(_translate("MainWindow", "No"))
+        self.previous1.setText(_translate("MainWindow", "Yes"))
+        self.previous0.setText(_translate("MainWindow", "No"))
+
         self.label_15.setText(_translate("MainWindow", "DEPOSIT:"))
-        self.daunguc0.setText(_translate("MainWindow", "No"))
-        self.daunguc1.setText(_translate("MainWindow", "Yes"))
+        self.deposit0.setText(_translate("MainWindow", "No"))
+        self.deposit1.setText(_translate("MainWindow", "Yes"))
+
         self.chuandoan.setText(_translate("MainWindow", "Chẩn đoán"))
+        
         self.label_16.setText(_translate("MainWindow", "Kết quả:"))
+        
         self.nhandulieu.setText(_translate("MainWindow", "Nhận dữ liệu đầu vào"))
+        
         self.huanluyen.setText(_translate("MainWindow", "Chẩn đoán tập dữ liệu bằng RandomForest"))
         self.label_17.setText(_translate("MainWindow", "4 cây quyết định đầu tiên được tạo:"))
         self.label_18.setText(
@@ -457,11 +493,11 @@ class Ui_MainWindow(object):
         self.label_20.setText(_translate("MainWindow", "Độ quan trọng của các thuộc tính:"))
         self.label_21.setText(_translate("MainWindow", "Điểm độ chính xác"))
         self.label_22.setText(_translate("MainWindow", "của mô hình:"))
-        self.label_23.setText(_translate("MainWindow", "accuracy_score:"))
-        self.label_24.setText(_translate("MainWindow", "precision_score:"))
-        self.label_25.setText(_translate("MainWindow", "recall_score:"))
+        self.label_23.setText(_translate("MainWindow", "Accuracy_score:"))
+        self.label_24.setText(_translate("MainWindow", "Precision_score:"))
+        self.label_25.setText(_translate("MainWindow", "Recall_score:"))
         self.label_26.setText(_translate("MainWindow", "Bảng tập dữ liệu nhận vào:"))
-        self.tuoi.setSpecialValueText("43")
+        
 
     def nhan(self):
         table = QTableWidget()
@@ -491,53 +527,53 @@ class Ui_MainWindow(object):
 
     def chandoan(self):
         gioitinh = 0;
-        tuoii = 0;
-        hutthuoc = 0;
-        ngontayvang = 0;
-        lolang = 0;
-        apluc = 0;
-        benhmantinh = 0;
-        metmoi = 0;
-        diung = 0;
-        thokhokhe = 0;
+        agei = 0;
+        maritual = 0;
+        education = 0;
+        default = 0;
+        blance = 0;
+        housing = 0;
+        loan = 0;
+        contact = 0;
+        day = 0;
         uongruou = 0;
         ho = 0;
-        khotho = 0;
-        khonuot = 0;
-        daunguc = 0
+        campaign = 0;
+        previous = 0;
+        deposit = 0
         if self.nam.isChecked() == True:         gioitinh = 1
         if self.nu.isChecked() == True:          gioitinh = 0
-        if self.hutthuoc1.isChecked() == True:   hutthuoc = 1
-        if self.hutthuoc0.isChecked() == True:   hutthuoc = 0
-        if self.ngontayvang1.isChecked() == True: ngontayvang = 1
-        if self.ngontayvang0.isChecked() == True: ngontayvang = 0
-        if self.lolang1.isChecked() == True:     lolang = 1
-        if self.lolang0.isChecked() == True:     lolang = 0
-        if self.apluc1.isChecked() == True:      apluc = 1
-        if self.apluc0.isChecked() == True:      apluc = 0
-        if self.benhmantinh1.isChecked() == True: benhmantinh = 1
-        if self.benhmantinh0.isChecked() == True: benhmantinh = 0
-        if self.metmoi1.isChecked() == True:     metmoi = 1
-        if self.metmoi0.isChecked() == True:     metmoi = 0
-        if self.diung1.isChecked() == True:      diung = 1
-        if self.diung0.isChecked() == True:      diung = 0
-        if self.thokhokhe1.isChecked() == True:  thokhokhe = 1
-        if self.thokhokhe0.isChecked() == True:  thokhokhe = 0
-        if self.unguou1.isChecked() == True:     uongruou = 1
-        if self.unguou0.isChecked() == True:     uongruou = 0
+        if self.maritual1.isChecked() == True:   maritual = 1
+        if self.maritual0.isChecked() == True:   maritual = 0
+        if self.education1.isChecked() == True: education = 1
+        if self.education0.isChecked() == True: education = 0
+        if self.default1.isChecked() == True:     default = 1
+        if self.default0.isChecked() == True:     default = 0
+        if self.blance1.isChecked() == True:      blance = 1
+        if self.blance0.isChecked() == True:      blance = 0
+        if self.housing1.isChecked() == True: housing = 1
+        if self.housing0.isChecked() == True: housing = 0
+        if self.loan1.isChecked() == True:     loan = 1
+        if self.loan0.isChecked() == True:     loan = 0
+        if self.contact1.isChecked() == True:      contact = 1
+        if self.contact0.isChecked() == True:      contact = 0
+        if self.day1.isChecked() == True:  day = 1
+        if self.day0.isChecked() == True:  day = 0
+        if self.month1.isChecked() == True:     uongruou = 1
+        if self.month0.isChecked() == True:     uongruou = 0
         if self.ho1.isChecked() == True:         ho = 1
         if self.ho0.isChecked() == True:         ho = 0
-        if self.khotho1.isChecked() == True:     khotho = 1
-        if self.khotho0.isChecked() == True:     khotho = 0
-        if self.khonuot1.isChecked() == True:    khonuot = 1
-        if self.khonuot0.isChecked() == True:    khonuot = 0
-        if self.daunguc1.isChecked() == True:    daunguc = 1
-        if self.daunguc0.isChecked() == True:    daunguc = 0
-        tuoii = int(self.tuoi.text()) - 43
-        if tuoii < 0: tuoii = 0
+        if self.campaign1.isChecked() == True:     campaign = 1
+        if self.campaign0.isChecked() == True:     campaign = 0
+        if self.previous1.isChecked() == True:    previous = 1
+        if self.previous0.isChecked() == True:    previous = 0
+        if self.deposit1.isChecked() == True:    deposit = 1
+        if self.deposit0.isChecked() == True:    deposit = 0
+        agei = int(self.age.text()) - 43
+        if agei < 0: agei = 0
         chandoann = ''
-        predict = clf.predict([[gioitinh, tuoii, hutthuoc, ngontayvang, lolang, apluc, benhmantinh, metmoi, diung,
-                                thokhokhe, uongruou, ho, khotho, khonuot, daunguc]])
+        predict = clf.predict([[gioitinh, agei, maritual, education, default, blance, housing, loan, contact,
+                                day, uongruou, ho, campaign, previous, deposit]])
         if (predict == [1]):
             chandoann = "Dự đoán : \n Người này rủi ro tài chính"
         else:
