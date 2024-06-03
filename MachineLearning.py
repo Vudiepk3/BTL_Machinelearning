@@ -9,7 +9,7 @@ import numpy as np  # Import numpy để xử lý các mảng số học
 import matplotlib.pyplot as plt  # Import matplotlib để vẽ biểu đồ
 
 ###Bươc thu thập dữ liệu đầu vào
-df = pd.read_csv("D:\MachineLearning\LungCancer\data.csv")
+df = pd.read_csv("D:\MachineLearning\data.csv")
 # print("\nNhận dữ liệu đầu vào:")
 # print(df)
 # print("Mô tả thống kê dữ liệu đầu vào:")
@@ -34,6 +34,8 @@ df['DURATION'] = le.fit_transform(df['DURATION'])
 df['CAMPAIGN'] = le.fit_transform(df['CAMPAIGN'])
 df['PREVIOUS'] = le.fit_transform(df['PREVIOUS'])
 df['DEPOSIT'] = le.fit_transform(df['DEPOSIT'])
+#df['PDAYS'] = le.fit_transform(df['PDAYS'])
+#df['POUTCOME'] = le.fit_transform(df['POUTCOME'])
 df['LUNG_CANCER'] = le.fit_transform(df['LUNG_CANCER'])
 # print("Tập dữ liệu sau khi chuyển đổi :")
 # print(df)
@@ -49,7 +51,14 @@ X_train, X_test, Y_train, Y_test = train_test_split(inputs, target, test_size=0.
 ###Bước: Xây dựng mô hình rừng cây từ tập dữ liệu huấn luyện
 from sklearn.ensemble import RandomForestClassifier
 
-clf = RandomForestClassifier(n_estimators=300, max_features=15, min_samples_split=3, max_depth=16, random_state=0)
+clf = RandomForestClassifier(
+    n_estimators=300,        # Số lượng cây trong rừng ngẫu nhiên là 300.
+    max_features=15,         # Số lượng đặc trưng tối đa được xem xét để tách tại mỗi nút trong cây là 15.
+    min_samples_split=3,     # Số lượng mẫu tối thiểu cần thiết để tách một nút là 3.
+    max_depth=16,            # Độ sâu tối đa của mỗi cây là 16.
+    random_state=0           # Hạt giống ngẫu nhiên được sử dụng để khởi tạo bộ sinh số ngẫu nhiên.
+)
+
 ###Bước: Huấn luyện mô hình
 clf.fit(X_train, Y_train)
 Y_pred = clf.predict(X_test)  # Dự đoán nhãn trên tập kiểm tra
@@ -531,20 +540,30 @@ class Ui_MainWindow(object):
         self.label_24.setText(_translate("MainWindow", "Điểm chính xác:"))
         self.label_25.setText(_translate("MainWindow", "Điểm thu hôi:"))
         self.label_26.setText(_translate("MainWindow", "Bảng tập dữ liệu nhận vào:"))
-        
 
     def nhan(self):
+        # Tạo một QTableWidget để hiển thị dữ liệu
         table = QTableWidget()
+
+        # Đặt số lượng cột của bảng bằng số lượng cột của DataFrame
         table.setColumnCount(len(df.columns))
+
+        # Đặt số lượng hàng của bảng bằng số lượng hàng của DataFrame
         table.setRowCount(len(df.index))
+
         # Thêm dữ liệu vào QTableWidget
         for i in range(len(df.index)):
             for j in range(len(df.columns)):
+                # Đặt giá trị của ô tại vị trí hàng i và cột j trong bảng
                 table.setItem(i, j, QTableWidgetItem(str(df.iloc[i, j])))
+
+        # Đặt nhãn cho tiêu đề các cột
         table.setHorizontalHeaderLabels(
             ["JOB", "AGE", "MARITAL", "EDUCATION", "DEFAULT", "BALANCE", "HOUSING", "FATIGUE",
              "CONTACT", "DAY", "MONTH", "DURATION", "CAMPAIGN", "PREVIOUS",
              "DEPOSIT", "LUNG_CANCER"])
+
+        # Thêm bảng vào bố cục (layout) để hiển thị trên giao diện người dùng
         self.bangdulieu.addWidget(table)
 
     def train(self):
