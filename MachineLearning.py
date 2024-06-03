@@ -1,12 +1,12 @@
-from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QTableWidget, QTableWidgetItem
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from sklearn.metrics import roc_curve, auc
-from matplotlib.legend_handler import HandlerLine2D
-from sklearn import tree
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+from PyQt6 import QtCore, QtGui, QtWidgets  # Import các module cần thiết từ PyQt6
+from PyQt6.QtWidgets import QTableWidget, QTableWidgetItem  # Import các widget cụ thể từ PyQt6
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas  # Import FigureCanvas cho việc hiển thị đồ thị trên giao diện
+from sklearn.metrics import roc_curve, auc  # Import các hàm đánh giá mô hình từ sklearn
+from matplotlib.legend_handler import HandlerLine2D  # Import HandlerLine2D để xử lý legend trong biểu đồ
+from sklearn import tree  # Import tree từ sklearn để vẽ cây quyết định
+import pandas as pd  # Import pandas để xử lý dữ liệu
+import numpy as np  # Import numpy để xử lý các mảng số học
+import matplotlib.pyplot as plt  # Import matplotlib để vẽ biểu đồ
 
 ###Bươc thu thập dữ liệu đầu vào
 df = pd.read_csv("D:\MachineLearning\LungCancer\data.csv")
@@ -18,7 +18,6 @@ df = pd.read_csv("D:\MachineLearning\LungCancer\data.csv")
 ###Bước: tiền sử lý dữ liệu
 ### các thuộc tính thuộc loại dữ liệu đối tượng. Vì vậy phải chuyển đổi dữ liệu về dạng số hóa
 from sklearn import preprocessing
-
 le = preprocessing.LabelEncoder()
 df['JOB'] = le.fit_transform(df['JOB'])
 df['AGE'] = le.fit_transform(df['AGE'])
@@ -75,105 +74,152 @@ recall = recall_score(Y_pred, Y_test)
 # print("Accuracy:", accuracy) độ chính xác
 # print("Precision:", precision) độ chính xác dương tính
 # print("Recall:", recall) độ phủ
-
 class show_tree(FigureCanvas):
     def __init__(self):
-        self.fig, self.ax = plt.subplots()
-        super().__init__(self.fig)
-        plt.close()
-        plt.ion()
-        self.axes = self.fig.subplots(2, 2)
-        self.ax.set_frame_on(False)
-        self.ax.set_xticks([])
-        self.ax.set_yticks([])
-        for i, ax in enumerate(self.axes.flat):
-            trees = clf.estimators_[i]
-            _ = tree.plot_tree(trees, feature_names=None, class_names=None, filled=True, ax=ax)
-        self.draw()
+        self.fig, self.ax = plt.subplots()  # Tạo một đối tượng figure và axes.
+        super().__init__(self.fig)  # Khởi tạo lớp cha FigureCanvas với đối tượng figure.
+        plt.close()  # Đóng đối tượng figure (tránh hiển thị không mong muốn).
+        plt.ion()  # Bật chế độ tương tác của matplotlib.
+        self.axes = self.fig.subplots(2, 2)  # Tạo một lưới subplot 2x2.
+        self.ax.set_frame_on(False)  # Loại bỏ khung của axes chính.
+        self.ax.set_xticks([])  # Ẩn các nhãn của trục x.
+        self.ax.set_yticks([])  # Ẩn các nhãn của trục y.
+        for i, ax in enumerate(self.axes.flat):  # Lặp qua từng subplot (axes con) trong lưới 2x2.
+            trees = clf.estimators_[i]  # Lấy cây quyết định thứ i từ mô hình Random Forest.
+            _ = tree.plot_tree(trees, feature_names=None, class_names=None, filled=True, ax=ax)  # Vẽ cây quyết định lên subplot tương ứng.
+        self.draw()  # Vẽ lại toàn bộ figure để hiển thị các cây quyết định.
 
 
 class show_auc(FigureCanvas):
     def __init__(self):
-        self.fig, self.ax = plt.subplots()
-        super().__init__(self.fig)
-        plt.close()
-        plt.ion()
+        self.fig, self.ax = plt.subplots()  # Tạo một đối tượng figure và axes.
+        super().__init__(self.fig)  # Khởi tạo lớp cha FigureCanvas với đối tượng figure.
+        plt.close()  # Đóng đối tượng figure (tránh hiển thị không mong muốn).
+        plt.ion()  # Bật chế độ tương tác của matplotlib.
+
+        # Các giá trị khác nhau của n_estimators sẽ được thử nghiệm
         n_estimators = [1, 2, 4, 8, 16, 32, 64, 128, 300]
-        train_results = []
-        test_results = []
+
+        train_results = []  # Danh sách để lưu trữ kết quả AUC trên tập huấn luyện.
+        test_results = []  # Danh sách để lưu trữ kết quả AUC trên tập kiểm tra.
+
+        # Lặp qua từng giá trị của n_estimators để huấn luyện mô hình và tính toán AUC.
         for estimator in n_estimators:
-            rf = RandomForestClassifier(n_estimators=estimator, n_jobs=-1)
-            rf.fit(X_train, Y_train)
-            train_pred = rf.predict(X_train)
-            false_positive_rate, true_positive_rate, thresholds = roc_curve(Y_train, train_pred)
-            roc_auc = auc(false_positive_rate, true_positive_rate)
-            train_results.append(roc_auc)
-            y_pred = rf.predict(X_test)
-            false_positive_rate, true_positive_rate, thresholds = roc_curve(Y_test, y_pred)
-            roc_auc = auc(false_positive_rate, true_positive_rate)
-            test_results.append(roc_auc)
-        line1, = self.ax.plot(n_estimators, train_results, "b", label="Train AUC")
-        line2, = self.ax.plot(n_estimators, test_results, "r", label="Test AUC")
-        self.fig.legend(handler_map={line1: HandlerLine2D(numpoints=2)})
-        self.ax.set_ylabel("auc score")
-        self.ax.set_xlabel("n_estimators")
-        self.fig.suptitle(' Area Under The Curve (AUC)', size=8)
+            rf = RandomForestClassifier(n_estimators=estimator,
+                                        n_jobs=-1)  # Khởi tạo mô hình RandomForest với số lượng cây tương ứng.
+            rf.fit(X_train, Y_train)  # Huấn luyện mô hình trên tập huấn luyện.
+
+            train_pred = rf.predict(X_train)  # Dự đoán trên tập huấn luyện.
+            false_positive_rate, true_positive_rate, thresholds = roc_curve(Y_train,
+                                                                            train_pred)  # Tính FPR và TPR cho ROC curve trên tập huấn luyện.
+            roc_auc = auc(false_positive_rate, true_positive_rate)  # Tính AUC cho ROC curve trên tập huấn luyện.
+            train_results.append(roc_auc)  # Lưu trữ kết quả AUC của tập huấn luyện.
+
+            y_pred = rf.predict(X_test)  # Dự đoán trên tập kiểm tra.
+            false_positive_rate, true_positive_rate, thresholds = roc_curve(Y_test,
+                                                                            y_pred)  # Tính FPR và TPR cho ROC curve trên tập kiểm tra.
+            roc_auc = auc(false_positive_rate, true_positive_rate)  # Tính AUC cho ROC curve trên tập kiểm tra.
+            test_results.append(roc_auc)  # Lưu trữ kết quả AUC của tập kiểm tra.
+
+        # Vẽ đồ thị AUC cho tập huấn luyện và tập kiểm tra.
+        line1, = self.ax.plot(n_estimators, train_results, "b",
+                              label="Train AUC")  # Vẽ đường biểu diễn AUC của tập huấn luyện.
+        line2, = self.ax.plot(n_estimators, test_results, "r",
+                              label="Test AUC")  # Vẽ đường biểu diễn AUC của tập kiểm tra.
+
+        self.fig.legend(handler_map={line1: HandlerLine2D(numpoints=2)})  # Tạo chú thích (legend) cho đồ thị.
+        self.ax.set_ylabel("auc score")  # Đặt nhãn trục y.
+        self.ax.set_xlabel("n_estimators")  # Đặt nhãn trục x.
+        self.fig.suptitle('Area Under The Curve (AUC)', size=8)  # Đặt tiêu đề cho đồ thị.
 
 
 class show_roc(FigureCanvas):
     def __init__(self):
-        self.fig, self.ax = plt.subplots()
-        super().__init__(self.fig)
-        plt.close()
-        plt.ion()
-        false_positive_rate, true_positive_rate, thresholds = roc_curve(Y_test, Y_pred)
-        roc_auc = auc(false_positive_rate, true_positive_rate)
-        self.ax.plot(false_positive_rate, true_positive_rate, label='ROC Curve (AUC = {:.2f})'.format(roc_auc))
-        self.ax.plot([0, 1], [0, 1], 'k--', label='Random Guess')
-        self.ax.set_xlabel('False Positive Rate')
-        self.ax.set_ylabel('True Positive Rate')
-        self.fig.suptitle('Receiver Operating Characteristic (ROC)', size=8)
-        self.fig.legend(loc='lower right')
+        self.fig, self.ax = plt.subplots()  # Tạo một đối tượng figure và axes.
+        super().__init__(self.fig)  # Khởi tạo lớp cha FigureCanvas với đối tượng figure.
+        plt.close()  # Đóng đối tượng figure (tránh hiển thị không mong muốn).
+        plt.ion()  # Bật chế độ tương tác của matplotlib.
 
+        # Tính toán các giá trị để vẽ đường cong ROC
+        false_positive_rate, true_positive_rate, thresholds = roc_curve(Y_test, Y_pred)
+        roc_auc = auc(false_positive_rate, true_positive_rate)  # Tính AUC cho ROC curve
+
+        # Vẽ đường cong ROC
+        self.ax.plot(false_positive_rate, true_positive_rate, label='ROC Curve (AUC = {:.2f})'.format(roc_auc))
+
+        # Vẽ đường chấm chấm biểu diễn cho dự đoán ngẫu nhiên
+        self.ax.plot([0, 1], [0, 1], 'k--', label='Random Guess')
+
+        # Thiết lập nhãn trục x và y
+        self.ax.set_xlabel('False Positive Rate')  # Đặt nhãn trục x là "False Positive Rate"
+        self.ax.set_ylabel('True Positive Rate')  # Đặt nhãn trục y là "True Positive Rate"
+
+        # Đặt tiêu đề cho đồ thị
+        self.fig.suptitle('Receiver Operating Characteristic (ROC)',
+                          size=8)  # Đặt tiêu đề cho đồ thị là "Receiver Operating Characteristic (ROC)" với kích thước chữ là 8.
+
+        # Thêm chú thích vào đồ thị
+        self.fig.legend(loc='lower right')  # Đặt vị trí chú thích ở góc dưới bên phải.
 
 class show_importance(FigureCanvas):
     def __init__(self):
-        self.fig, self.ax = plt.subplots()
-        super().__init__(self.fig)
-        plt.close()
-        plt.ion()
-        labels = feature_imp.index
-        values = feature_imp
-        x = np.arange(len(labels))
-        width = 0.5
-        rects = self.ax.barh(x, values, width, label="importance")
-        self.ax.bar_label(rects)
-        self.ax.set_yticks(x)
+        self.fig, self.ax = plt.subplots()  # Tạo một đối tượng figure và axes.
+        super().__init__(self.fig)  # Khởi tạo lớp cha FigureCanvas với đối tượng figure.
+        plt.close()  # Đóng đối tượng figure (tránh hiển thị không mong muốn).
+        plt.ion()  # Bật chế độ tương tác của matplotlib.
+
+        # Lấy nhãn và giá trị mức độ quan trọng của các thuộc tính
+        labels = feature_imp.index  # Lấy nhãn từ chỉ số của feature_imp.
+        values = feature_imp  # Lấy giá trị từ feature_imp.
+
+        # Thiết lập trục x và độ rộng của các thanh
+        x = np.arange(len(labels))  # Tạo một mảng số từ 0 đến số lượng nhãn.
+        width = 0.5  # Đặt độ rộng của các thanh là 0.5.
+
+        # Vẽ biểu đồ thanh ngang
+        rects = self.ax.barh(x, values, width, label="importance")  # Vẽ biểu đồ thanh ngang với nhãn và giá trị mức độ quan trọng.
+
+        # Gắn nhãn vào các thanh
+        self.ax.bar_label(rects)  # Thêm nhãn giá trị vào các thanh.
+
+        # Thiết lập các nhãn cho trục y
+        self.ax.set_yticks(x)  # Đặt các vị trí ticks trên trục y bằng các giá trị của mảng x.
         self.ax.set_yticklabels(['AGE', 'BALANCE', 'CONTACT ', 'MONTH', 'LOAN',
                                  'PREVIOUS', 'DAY', 'HOUSING', 'JOB',
                                  'DEPOSIT', 'EDUCATION', 'CAMPAIGN', 'DEFAULT',
-                                 'DURATION', 'MARITAL'])
-        self.fig.suptitle("Feature Importance Score", size=8)
+                                 'DURATION', 'MARITAL'])  # Đặt nhãn cho các ticks trên trục y.
+
+        # Đặt tiêu đề cho biểu đồ
+        self.fig.suptitle("Feature Importance Score", size=8)  # Đặt tiêu đề cho biểu đồ là "Feature Importance Score" với kích thước chữ là 8.
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        # Thiết lập cửa sổ chính
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1510, 882)
+
+        # Tạo widget trung tâm
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+
+        # Tạo GroupBox cho các điều khiển nhập liệu
         self.groupBox = QtWidgets.QGroupBox(parent=self.centralwidget)
-        self.groupBox.setGeometry(QtCore.QRect(1010, 20, 231, 791))#dieu chinh vi tri x = 1010 thanh 1210 neu man hinh co kich thic lon
+        self.groupBox.setGeometry(QtCore.QRect(1010, 20, 231, 791))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.groupBox.setFont(font)
         self.groupBox.setObjectName("groupBox")
+
+        # Tạo và thiết lập các nhãn, checkbox, spinbox cho các yếu tố đầu vào
         self.label = QtWidgets.QLabel(parent=self.groupBox)
         self.label.setGeometry(QtCore.QRect(10, 30, 55, 16))
         self.label.setObjectName("label")
+
         self.nam = QtWidgets.QCheckBox(parent=self.groupBox)
         self.nam.setGeometry(QtCore.QRect(100, 30, 51, 20))
         self.nam.setObjectName("nam")
+
         self.nu = QtWidgets.QCheckBox(parent=self.groupBox)
         self.nu.setGeometry(QtCore.QRect(150, 30, 51, 20))
         self.nu.setObjectName("nu")
@@ -481,9 +527,9 @@ class Ui_MainWindow(object):
         self.label_20.setText(_translate("MainWindow", "Độ quan trọng của các thuộc tính:"))
         self.label_21.setText(_translate("MainWindow", "Điểm độ chính xác"))
         self.label_22.setText(_translate("MainWindow", "của mô hình:"))
-        self.label_23.setText(_translate("MainWindow", "Accuracy_score:"))
-        self.label_24.setText(_translate("MainWindow", "Precision_score:"))
-        self.label_25.setText(_translate("MainWindow", "Recall_score:"))
+        self.label_23.setText(_translate("MainWindow", "Độ chính xác:"))
+        self.label_24.setText(_translate("MainWindow", "Điểm chính xác:"))
+        self.label_25.setText(_translate("MainWindow", "Điểm thu hôi:"))
         self.label_26.setText(_translate("MainWindow", "Bảng tập dữ liệu nhận vào:"))
         
 
