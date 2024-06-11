@@ -308,46 +308,40 @@ class Ui_MainWindow(object):
         self.label_12 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_12.setGeometry(QtCore.QRect(10, 430, 71, 16))
         self.label_12.setObjectName("label_12")
-        self.month1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.month1.setGeometry(QtCore.QRect(100, 430, 41, 16))
-        self.month1.setObjectName("month1")
-        self.month0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.month0.setGeometry(QtCore.QRect(150, 430, 61, 20))
-        self.month0.setObjectName("month0")
+        self.employmenttype = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.employmenttype.setGeometry(QtCore.QRect(100, 430, 100, 16))
+        self.employmenttype.setObjectName("employmenttype")
+
 
         self.label_11 = QtWidgets.QLabel(parent=self.groupBox)
-        self.label_11.setGeometry(QtCore.QRect(10, 470, 31, 16))
+        self.label_11.setGeometry(QtCore.QRect(10, 470, 71, 16))
         self.label_11.setObjectName("label_11")
-        self.duration = QtWidgets.QSpinBox(parent=self.groupBox)
-        self.duration.setGeometry(QtCore.QRect(100, 470, 41, 16))
-        self.duration.setObjectName("duration")
+        self.maritalstatus = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.maritalstatus.setGeometry(QtCore.QRect(100, 470, 100, 16))
+        self.maritalstatus.setObjectName("maritalstatus")
 
         self.label_13 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_13.setGeometry(QtCore.QRect(10, 510, 55, 16))
         self.label_13.setObjectName("label_13")
-        self.campaign = QtWidgets.QSpinBox(parent=self.groupBox)
-        self.campaign.setGeometry(QtCore.QRect(100, 510, 41, 16))
-        self.campaign.setObjectName("campaign")
+        self.hasmortgage = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.hasmortgage.setGeometry(QtCore.QRect(100, 510, 100, 16))
+        self.hasmortgage.setObjectName("hasmortgage")
 
         self.label_14 = QtWidgets.QLabel(parent=self.groupBox)
-        self.label_14.setGeometry(QtCore.QRect(10, 550, 55, 16))
+        self.label_14.setGeometry(QtCore.QRect(10, 550, 70, 16))
         self.label_14.setObjectName("label_14")
-        self.previous1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.previous1.setGeometry(QtCore.QRect(100, 550, 41, 16))
-        self.previous1.setObjectName("previous1")
-        self.previous0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.previous0.setGeometry(QtCore.QRect(150, 550, 61, 20))
-        self.previous0.setObjectName("previous0")
+        self.hasdependents= QtWidgets.QSpinBox(parent=self.groupBox)
+        self.hasdependents.setGeometry(QtCore.QRect(100, 550, 100, 16))
+        self.hasdependents.setObjectName("hasdependents")
+
 
         self.label_15 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_15.setGeometry(QtCore.QRect(10, 590, 61, 16))
         self.label_15.setObjectName("label_15")
-        self.deposit0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.deposit0.setGeometry(QtCore.QRect(150, 590, 61, 20))
-        self.deposit0.setObjectName("deposit0")
-        self.deposit1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.deposit1.setGeometry(QtCore.QRect(100, 590, 41, 16))
-        self.deposit1.setObjectName("deposit1")
+        self.loanpurposeComboBox = QtWidgets.QComboBox(parent=self.groupBox)
+        self.loanpurposeComboBox.setGeometry(QtCore.QRect(100, 590, 100, 20))
+        self.loanpurposeComboBox.setObjectName("loanpurposeComboBox")
+        self.loanpurposeComboBox.addItems(["Auto=0", "Business = 1", "Education=2", "Home =3", "Other=4"])
 
         self.ketqua = QtWidgets.QTextEdit(parent=self.groupBox)
         self.ketqua.setGeometry(QtCore.QRect(20, 690, 191, 71))
@@ -487,22 +481,21 @@ class Ui_MainWindow(object):
         self.educationComboBox.setCurrentText("Bachelor's")
 
         self.label_12.setText(_translate("MainWindow", "EMPLOYMENTTYPE:"))
-        self.month1.setText(_translate("MainWindow", "Yes"))
-        self.month0.setText(_translate("MainWindow", "No"))
+        self.employmenttype.setSpecialValueText("10000")
+
 
         self.label_11.setText(_translate("MainWindow", "MARITALSTATUS:"))
-        self.duration.setSpecialValueText("100")
+        self.maritalstatus.setSpecialValueText("100")
 
         self.label_13.setText(_translate("MainWindow", "HASMORTGAGE:"))
-        self.campaign.setSpecialValueText("100")
+        self.hasmortgage.setSpecialValueText("100000")
 
         self.label_14.setText(_translate("MainWindow", "HASDEPENDENTS:"))
-        self.previous1.setText(_translate("MainWindow", "Yes"))
-        self.previous0.setText(_translate("MainWindow", "No"))
+        self.hasdependents.setSpecialValueText("100000")
 
         self.label_15.setText(_translate("MainWindow", "LOANPURPOSE:"))
-        self.deposit0.setText(_translate("MainWindow", "No"))
-        self.deposit1.setText(_translate("MainWindow", "Yes"))
+        self.loanpurposeComboBox.setCurrentText("Auto=0")
+
 
         self.chuandoan.setText(_translate("MainWindow", "Chẩn đoán"))
 
@@ -562,13 +555,16 @@ class Ui_MainWindow(object):
 
     def chandoan(self):
 
-        month = 1 if self.month1.isChecked() else 0
-        previous = 1 if self.previous1.isChecked() else 0
-        deposit = 1 if self.deposit1.isChecked() else 0
+
+
+
 
         def get_valid_value(value):
             return max(int(value) - 100, 0)
 
+        loanpurposei = self.loanpurposeComboBox.currentIndex()
+        hasdependentsi = get_valid_value(self.hasdependents.text())
+        employmenttypei = get_valid_value(self.employmenttype.text())
         dtiratioi = get_valid_value(self.dtiratio.text())
         loantermi = get_valid_value(self.loanterm.text())
         interestratei = get_valid_value(self.interestrate.text())
@@ -579,13 +575,13 @@ class Ui_MainWindow(object):
         agei = get_valid_value(self.age.text())
         numbercreditlinesi = get_valid_value(self.numbercreditlines.text())
         educationi = self.educationComboBox.currentIndex()
-        durationi = get_valid_value(self.duration.text())
-        campaigni = get_valid_value(self.campaign.text())
+        maritalstatusi = get_valid_value(self.maritalstatus.text())
+        hasmortgagei = get_valid_value(self.hasmortgage.text())
 
         chandoann = ''
-        predict = clf.predict([[incomei, agei, loanamounti, creditscorei, monthsemployedi,
-                                numbercreditlinesi, interestratei, loantermi, dtiratioi,
-                                educationi, month, durationi, campaigni, previous, deposit]])
+        predict = clf.predict([[incomei, agei, loanamounti, creditscorei, monthsemployedi,numbercreditlinesi,
+                                interestratei, loantermi, dtiratioi,educationi,
+                                employmenttypei, maritalstatusi, hasmortgagei, hasdependentsi, loanpurposei]])
         if (predict == [1]):
             chandoann = "Dự đoán : \n Người này rủi ro tài chính"
         else:
