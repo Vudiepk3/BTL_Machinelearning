@@ -211,10 +211,16 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         # Thiết lập cửa sổ chính
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1510, 882)
+        MainWindow.resize(1510, 890)
+
+        # Tạo ScrollArea và thiết lập nó làm widget trung tâm
+        self.scrollArea = QtWidgets.QScrollArea(MainWindow)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
 
         # Tạo widget trung tâm
-        self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
+        self.centralwidget = QtWidgets.QWidget()
+        self.centralwidget.setGeometry(QtCore.QRect(0, 0, 1500, 1500))
         self.centralwidget.setObjectName("centralwidget")
 
         # Tạo GroupBox cho các điều khiển nhập liệu
@@ -229,7 +235,6 @@ class Ui_MainWindow(object):
         self.label = QtWidgets.QLabel(parent=self.groupBox)
         self.label.setGeometry(QtCore.QRect(10, 30, 55, 16))
         self.label.setObjectName("label")
-
         self.income = QtWidgets.QSpinBox(parent=self.groupBox)
         self.income.setGeometry(QtCore.QRect(100, 30, 100, 20))
         self.income.setObjectName("income")
@@ -348,7 +353,7 @@ class Ui_MainWindow(object):
         self.ketqua.setObjectName("ketqua")
 
         self.chuandoan = QtWidgets.QPushButton(parent=self.groupBox)
-        self.chuandoan.setGeometry(QtCore.QRect(70, 630, 93, 28))
+        self.chuandoan.setGeometry(QtCore.QRect(70, 600, 93, 28))
         self.chuandoan.setObjectName("chuandoan")
         self.label_16 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_16.setGeometry(QtCore.QRect(10, 660, 55, 21))
@@ -443,54 +448,79 @@ class Ui_MainWindow(object):
         self.huanluyen.clicked.connect(self.train)
         self.chuandoan.clicked.connect(self.chandoan)
 
+        self.scrollArea.setWidget(self.centralwidget)
+        MainWindow.setCentralWidget(self.scrollArea)
+        self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1100, 26))
+        self.menubar.setObjectName("menubar")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Nhóm 8:RandomForest"))
         self.groupBox.setTitle(_translate("MainWindow", "Dự đoán rủi ro tài chính"))
 
         self.label.setText(_translate("MainWindow", "INCOME:"))
+        self.income.setMaximum(1000000)
         self.income.setSpecialValueText("1000000")
 
         self.label_2.setText(_translate("MainWindow", "Age:"))
         self.age.setSpecialValueText("100")
 
         self.label_3.setText(_translate("MainWindow", "LOANAMOUNT:"))
+        self.loanamount.setMaximum(1000000)
         self.loanamount.setSpecialValueText("1000000")
 
         self.label_4.setText(_translate("MainWindow", "CREDITSCORE:"))
+        self.creditscore.setMaximum(1000000)
         self.creditscore.setSpecialValueText("1000000")
 
         self.label_5.setText(_translate("MainWindow", "MONTHSEMPLOYED:"))
+        self.monthsemployed.setMaximum(1000000)
         self.monthsemployed.setSpecialValueText("1000000")
 
         self.label_6.setText(_translate("MainWindow", "NUMCREDITLINES:"))
+        self.numbercreditlines.setMaximum(3)
         self.numbercreditlines.setSpecialValueText("3")
 
         self.label_7.setText(_translate("MainWindow", "INTERESTRATE:"))
+        self.interestrate.setMaximum(1000000)
         self.interestrate.setSpecialValueText("10000")
 
 
         self.label_8.setText(_translate("MainWindow", "LOANTERM:"))
+        self.loanterm.setMaximum(1000000)
         self.loanterm.setSpecialValueText("10000")
 
 
         self.label_9.setText(_translate("MainWindow", "DTIRATIO:"))
+        self.dtiratio.setMaximum(1000000)
         self.dtiratio.setSpecialValueText("10000")
 
         self.label_10.setText(_translate("MainWindow", "EDUCATION:"))
         self.educationComboBox.setCurrentText("Bachelor's")
 
         self.label_12.setText(_translate("MainWindow", "EMPLOYMENTTYPE:"))
+        self.employmenttype.setMaximum(1000000)
         self.employmenttype.setSpecialValueText("10000")
 
 
         self.label_11.setText(_translate("MainWindow", "MARITALSTATUS:"))
-        self.maritalstatus.setSpecialValueText("100")
+        self.maritalstatus.setMaximum(1000000)
+        self.maritalstatus.setSpecialValueText("")
 
         self.label_13.setText(_translate("MainWindow", "HASMORTGAGE:"))
-        self.hasmortgage.setSpecialValueText("100000")
+        self.hasmortgage.setMaximum(1000000)
+        self.hasmortgage.setSpecialValueText("")
 
         self.label_14.setText(_translate("MainWindow", "HASDEPENDENTS:"))
+        self.hasdependents.setMaximum(1000000)
         self.hasdependents.setSpecialValueText("100000")
 
         self.label_15.setText(_translate("MainWindow", "LOANPURPOSE:"))
@@ -554,39 +584,50 @@ class Ui_MainWindow(object):
         self.recallScore.setPlainText(r)
 
     def chandoan(self):
+        try:
+            loanpurposei = self.loanpurposeComboBox.currentIndex()
+            educationi = self.educationComboBox.currentIndex()
 
+            def get_positive_int_value(text):
+                value = int(text)
+                if value < 0:
+                    raise ValueError("Value cannot be negative")
+                return value
 
+            # Lấy giá trị trực tiếp từ các trường đầu vào và chuyển đổi chúng thành số nguyên
+            hasdependentsi = get_positive_int_value(self.hasdependents.text())
+            employmenttypei = get_positive_int_value(self.employmenttype.text())
+            dtiratioi = get_positive_int_value(self.dtiratio.text())
+            loantermi = get_positive_int_value(self.loanterm.text())
+            interestratei = get_positive_int_value(self.interestrate.text())
+            monthsemployedi = get_positive_int_value(self.monthsemployed.text())
+            creditscorei = get_positive_int_value(self.creditscore.text())
+            loanamounti = get_positive_int_value(self.loanamount.text())
+            incomei = get_positive_int_value(self.income.text())
+            agei = get_positive_int_value(self.age.text())
+            numbercreditlinesi = get_positive_int_value(self.numbercreditlines.text())
+            maritalstatusi = get_positive_int_value(self.maritalstatus.text())
+            hasmortgagei = get_positive_int_value(self.hasmortgage.text())
 
+            chandoann = ''
+            # Đảm bảo clf đã được định nghĩa và huấn luyện
+            try:
+                predict = clf.predict([[incomei, agei, loanamounti, creditscorei, monthsemployedi,
+                                        numbercreditlinesi, interestratei, loantermi, dtiratioi,
+                                        educationi, employmenttypei, maritalstatusi, hasmortgagei,
+                                        hasdependentsi, loanpurposei]])
+                if predict == [1]:
+                    chandoann = "Dự đoán : \n Người này rủi ro tài chính"
+                else:
+                    chandoann = "Dự đoán : \n Người này không rủi ro tài chính"
+            except NameError:
+                chandoann = "Error: Model clf is not defined or trained."
 
+            self.ketqua.setPlainText(chandoann)
 
-        def get_valid_value(value):
-            return max(int(value) - 100, 0)
-
-        loanpurposei = self.loanpurposeComboBox.currentIndex()
-        hasdependentsi = get_valid_value(self.hasdependents.text())
-        employmenttypei = get_valid_value(self.employmenttype.text())
-        dtiratioi = get_valid_value(self.dtiratio.text())
-        loantermi = get_valid_value(self.loanterm.text())
-        interestratei = get_valid_value(self.interestrate.text())
-        monthsemployedi = get_valid_value(self.monthsemployed.text())
-        creditscorei = get_valid_value(self.creditscore.text())
-        loanamounti = get_valid_value(self.loanamount.text())
-        incomei = get_valid_value(self.income.text())
-        agei = get_valid_value(self.age.text())
-        numbercreditlinesi = get_valid_value(self.numbercreditlines.text())
-        educationi = self.educationComboBox.currentIndex()
-        maritalstatusi = get_valid_value(self.maritalstatus.text())
-        hasmortgagei = get_valid_value(self.hasmortgage.text())
-
-        chandoann = ''
-        predict = clf.predict([[incomei, agei, loanamounti, creditscorei, monthsemployedi,numbercreditlinesi,
-                                interestratei, loantermi, dtiratioi,educationi,
-                                employmenttypei, maritalstatusi, hasmortgagei, hasdependentsi, loanpurposei]])
-        if (predict == [1]):
-            chandoann = "Dự đoán : \n Người này rủi ro tài chính"
-        else:
-            chandoann = "Dự đoán : \n Người này không rủi ro tài chính"
-        self.ketqua.setPlainText(chandoann)
+        except ValueError as e:
+            self.ketqua.setPlainText(
+                f"Error: {str(e)}. Please ensure all input fields are filled with valid non-negative numbers.")
 
 
 if __name__ == "__main__":
