@@ -1,6 +1,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets  # Import các module cần thiết từ PyQt6
 from PyQt6.QtWidgets import QTableWidget, QTableWidgetItem  # Import các widget cụ thể từ PyQt6
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas  # Import FigureCanvas cho việc hiển thị đồ thị trên giao diện
+from matplotlib.backends.backend_qt5agg import \
+    FigureCanvasQTAgg as FigureCanvas  # Import FigureCanvas cho việc hiển thị đồ thị trên giao diện
 from sklearn.metrics import roc_curve, auc  # Import các hàm đánh giá mô hình từ sklearn
 from matplotlib.legend_handler import HandlerLine2D  # Import HandlerLine2D để xử lý legend trong biểu đồ
 from sklearn import tree  # Import tree từ sklearn để vẽ cây quyết định
@@ -9,7 +10,7 @@ import numpy as np  # Import numpy để xử lý các mảng số học
 import matplotlib.pyplot as plt  # Import matplotlib để vẽ biểu đồ
 
 ###Bươc thu thập dữ liệu đầu vào
-df = pd.read_csv("D:\MachineLearning\data.csv")
+df = pd.read_csv("D:\MachineLearning\datatrain.csv")
 # print("\nNhận dữ liệu đầu vào:")
 # print(df)
 # print("Mô tả thống kê dữ liệu đầu vào:")
@@ -18,31 +19,32 @@ df = pd.read_csv("D:\MachineLearning\data.csv")
 ###Bước: tiền sử lý dữ liệu
 ### các thuộc tính thuộc loại dữ liệu đối tượng. Vì vậy phải chuyển đổi dữ liệu về dạng số hóa
 from sklearn import preprocessing
+
 le = preprocessing.LabelEncoder()
-df['JOB'] = le.fit_transform(df['JOB'])
+
 df['AGE'] = le.fit_transform(df['AGE'])
-df['MARITAL'] = le.fit_transform(df['MARITAL'])
+df['INCOME'] = le.fit_transform(df['INCOME'])
+df['LOANAMOUNT'] = le.fit_transform(df['LOANAMOUNT'])
+df['CREDITSCORE'] = le.fit_transform(df['CREDITSCORE'])
+df['MONTHSEMPLOYED'] = le.fit_transform(df['MONTHSEMPLOYED'])
+df['NUMCREDITLINES'] = le.fit_transform(df['NUMCREDITLINES'])
+df['INTERESTRATE'] = le.fit_transform(df['INTERESTRATE'])
+df['LOANTERM'] = le.fit_transform(df['LOANTERM'])
+df['DTIRATIO'] = le.fit_transform(df['DTIRATIO'])
 df['EDUCATION'] = le.fit_transform(df['EDUCATION'])
+df['EMPLOYMENTTYPE'] = le.fit_transform(df['EMPLOYMENTTYPE'])
+df['MARITALSTATUS'] = le.fit_transform(df['MARITALSTATUS'])
+df['HASMORTGAGE'] = le.fit_transform(df['HASMORTGAGE'])
+df['HASDEPENDENTS'] = le.fit_transform(df['HASDEPENDENTS'])
+df['LOANPURPOSE'] = le.fit_transform(df['LOANPURPOSE'])
+df['HASCOSIGNER'] = le.fit_transform(df['HASCOSIGNER'])
 df['DEFAULT'] = le.fit_transform(df['DEFAULT'])
-df['BALANCE'] = le.fit_transform(df['BALANCE'])
-df['HOUSING'] = le.fit_transform(df['HOUSING'])
-df['LOAN'] = le.fit_transform(df['LOAN'])
-df['CONTACT'] = le.fit_transform(df['CONTACT'])
-df['DAY'] = le.fit_transform(df['DAY'])
-df['MONTH'] = le.fit_transform(df['MONTH'])
-df['DURATION'] = le.fit_transform(df['DURATION'])
-df['CAMPAIGN'] = le.fit_transform(df['CAMPAIGN'])
-df['PREVIOUS'] = le.fit_transform(df['PREVIOUS'])
-df['DEPOSIT'] = le.fit_transform(df['DEPOSIT'])
-#df['PDAYS'] = le.fit_transform(df['PDAYS'])
-#df['POUTCOME'] = le.fit_transform(df['POUTCOME'])
-df['LUNG_CANCER'] = le.fit_transform(df['LUNG_CANCER'])
 # print("Tập dữ liệu sau khi chuyển đổi :")
 # print(df)
 
 ###Chia tập dữ liệu thành 2 tệp, tệp dữ liệu huấn luyện và tệp dữ liệu thử nghiệm
-inputs = df.drop('LUNG_CANCER', axis="columns")
-target = df['LUNG_CANCER']
+inputs = df.drop('DEFAULT', axis="columns")
+target = df['DEFAULT']
 ###Huấn luyện dữ liệu
 from sklearn.model_selection import train_test_split
 
@@ -52,11 +54,11 @@ X_train, X_test, Y_train, Y_test = train_test_split(inputs, target, test_size=0.
 from sklearn.ensemble import RandomForestClassifier
 
 clf = RandomForestClassifier(
-    n_estimators=300,        # Số lượng cây trong rừng ngẫu nhiên là 300.
-    max_features=15,         # Số lượng đặc trưng tối đa được xem xét để tách tại mỗi nút trong cây là 15.
-    min_samples_split=3,     # Số lượng mẫu tối thiểu cần thiết để tách một nút là 3.
-    max_depth=16,            # Độ sâu tối đa của mỗi cây là 16.
-    random_state=0           # Hạt giống ngẫu nhiên được sử dụng để khởi tạo bộ sinh số ngẫu nhiên.
+    n_estimators=2000,  # Số lượng cây trong rừng ngẫu nhiên là 2000.
+    max_features=16,  # Số lượng đặc trưng tối đa được xem xét để tách tại mỗi nút trong cây là 16.
+    min_samples_split=3,  # Số lượng mẫu tối thiểu cần thiết để tách một nút là 3.
+    max_depth=16,  # Độ sâu tối đa của mỗi cây là 16.
+    random_state=0  # Hạt giống ngẫu nhiên được sử dụng để khởi tạo bộ sinh số ngẫu nhiên.
 )
 
 ###Bước: Huấn luyện mô hình
@@ -66,7 +68,7 @@ Y_pred = clf.predict(X_test)  # Dự đoán nhãn trên tập kiểm tra
 # print(Y_pred)
 
 ###Mức độ quan trọng của các thuộc tính
-inputsss = df.drop('LUNG_CANCER', axis="columns")
+inputsss = df.drop('DEFAULT', axis="columns")
 feature_imp = pd.Series(clf.feature_importances_, index=inputsss.columns).sort_values(ascending=False)
 # print("\nMức độ quan trọng của các thuộc tính:")
 # print(feature_imp)
@@ -95,7 +97,8 @@ class show_tree(FigureCanvas):
         self.ax.set_yticks([])  # Ẩn các nhãn của trục y.
         for i, ax in enumerate(self.axes.flat):  # Lặp qua từng subplot (axes con) trong lưới 2x2.
             trees = clf.estimators_[i]  # Lấy cây quyết định thứ i từ mô hình Random Forest.
-            _ = tree.plot_tree(trees, feature_names=None, class_names=None, filled=True, ax=ax)  # Vẽ cây quyết định lên subplot tương ứng.
+            _ = tree.plot_tree(trees, feature_names=None, class_names=None, filled=True,
+                               ax=ax)  # Vẽ cây quyết định lên subplot tương ứng.
         self.draw()  # Vẽ lại toàn bộ figure để hiển thị các cây quyết định.
 
 
@@ -170,6 +173,7 @@ class show_roc(FigureCanvas):
         # Thêm chú thích vào đồ thị
         self.fig.legend(loc='lower right')  # Đặt vị trí chú thích ở góc dưới bên phải.
 
+
 class show_importance(FigureCanvas):
     def __init__(self):
         self.fig, self.ax = plt.subplots()  # Tạo một đối tượng figure và axes.
@@ -186,20 +190,21 @@ class show_importance(FigureCanvas):
         width = 0.5  # Đặt độ rộng của các thanh là 0.5.
 
         # Vẽ biểu đồ thanh ngang
-        rects = self.ax.barh(x, values, width, label="importance")  # Vẽ biểu đồ thanh ngang với nhãn và giá trị mức độ quan trọng.
+        rects = self.ax.barh(x, values, width,
+                             label="importance")  # Vẽ biểu đồ thanh ngang với nhãn và giá trị mức độ quan trọng.
 
         # Gắn nhãn vào các thanh
         self.ax.bar_label(rects)  # Thêm nhãn giá trị vào các thanh.
 
         # Thiết lập các nhãn cho trục y
         self.ax.set_yticks(x)  # Đặt các vị trí ticks trên trục y bằng các giá trị của mảng x.
-        self.ax.set_yticklabels(['AGE', 'BALANCE', 'CONTACT ', 'MONTH', 'LOAN',
-                                 'PREVIOUS', 'DAY', 'HOUSING', 'JOB',
-                                 'DEPOSIT', 'EDUCATION', 'CAMPAIGN', 'DEFAULT',
-                                 'DURATION', 'MARITAL'])  # Đặt nhãn cho các ticks trên trục y.
+        self.ax.set_yticklabels(['AGE', 'INCOME', 'LOANAMOUNT', 'CREDITSCORE', 'MONTHSEMPLOYED', 'NUMCREDITLINES', "INTERESTRATE",
+             'LOANTERM','DTIRATIO', 'EDUCATION', 'EMPLOYMENTTYPE', 'MARITALSTATUS',
+             'HASMORTGAGE', 'HASDEPENDENTS','LOANPURPOSE', 'HASCOSIGNER',])  # Đặt nhãn cho các ticks trên trục y.
 
         # Đặt tiêu đề cho biểu đồ
-        self.fig.suptitle("Feature Importance Score", size=8)  # Đặt tiêu đề cho biểu đồ là "Feature Importance Score" với kích thước chữ là 8.
+        self.fig.suptitle("Feature Importance Score",
+                          size=8)  # Đặt tiêu đề cho biểu đồ là "Feature Importance Score" với kích thước chữ là 8.
 
 
 class Ui_MainWindow(object):
@@ -225,13 +230,10 @@ class Ui_MainWindow(object):
         self.label.setGeometry(QtCore.QRect(10, 30, 55, 16))
         self.label.setObjectName("label")
 
-        self.nam = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.nam.setGeometry(QtCore.QRect(100, 30, 51, 20))
-        self.nam.setObjectName("nam")
+        self.income = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.income.setGeometry(QtCore.QRect(100, 30, 100, 20))
+        self.income.setObjectName("income")
 
-        self.nu = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.nu.setGeometry(QtCore.QRect(150, 30, 51, 20))
-        self.nu.setObjectName("nu")
 
         self.label_2 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_2.setGeometry(QtCore.QRect(10, 70, 41, 21))
@@ -243,77 +245,64 @@ class Ui_MainWindow(object):
         self.label_3 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_3.setGeometry(QtCore.QRect(10, 110, 71, 16))
         self.label_3.setObjectName("label_3")
-        self.maritual1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.maritual1.setGeometry(QtCore.QRect(100, 110, 41, 16))
-        self.maritual1.setObjectName("maritual1")
-        self.maritual0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.maritual0.setGeometry(QtCore.QRect(150, 110, 61, 20))
-        self.maritual0.setObjectName("maritual0")
+        self.loanamount = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.loanamount.setGeometry(QtCore.QRect(100, 110, 100, 16))
+        self.loanamount.setObjectName("loanamount")
+
 
         self.label_4 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_4.setGeometry(QtCore.QRect(10, 150, 91, 16))
         self.label_4.setObjectName("label_4")
-        self.education1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.education1.setGeometry(QtCore.QRect(100, 150, 41, 16))
-        self.education1.setObjectName("education1")
-        self.education0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.education0.setGeometry(QtCore.QRect(150, 150, 61, 20))
-        self.education0.setObjectName("education0")
+        self.creditscore = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.creditscore.setGeometry(QtCore.QRect(100, 150, 100, 16))
+        self.creditscore.setObjectName("creditscore")
+
 
         self.label_5 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_5.setGeometry(QtCore.QRect(10, 190, 55, 16))
         self.label_5.setObjectName("label_5")
-        self.default1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.default1.setGeometry(QtCore.QRect(100, 190, 41, 16))
-        self.default1.setObjectName("default1")
-        self.default0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.default0.setGeometry(QtCore.QRect(150, 190, 61, 20))
-        self.default0.setObjectName("default0")
+        self.monthsemployed = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.monthsemployed.setGeometry(QtCore.QRect(100, 190, 100, 16))
+        self.monthsemployed.setObjectName("monthsemployed")
+
 
         self.label_6 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_6.setGeometry(QtCore.QRect(10, 230, 55, 16))
         self.label_6.setObjectName("label_6")
-        self.blance = QtWidgets.QSpinBox(parent=self.groupBox)
-        self.blance.setGeometry(QtCore.QRect(100, 230, 41, 16))
-        self.blance.setObjectName("blance")
-
+        self.numbercreditlines = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.numbercreditlines.setGeometry(QtCore.QRect(100, 230, 100, 16))
+        self.numbercreditlines.setObjectName("numbercreditlines")
 
         self.label_7 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_7.setGeometry(QtCore.QRect(10, 270, 91, 16))
         self.label_7.setObjectName("label_7")
-        self.housing1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.housing1.setGeometry(QtCore.QRect(100, 270, 41, 16))
-        self.housing1.setObjectName("housing1")
-        self.housing0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.housing0.setGeometry(QtCore.QRect(150, 270, 61, 20))
-        self.housing0.setObjectName("housing0")
+        self.interestrate = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.interestrate.setGeometry(QtCore.QRect(100, 270, 100, 16))
+        self.interestrate.setObjectName("interestrate")
+
 
         self.label_8 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_8.setGeometry(QtCore.QRect(10, 310, 55, 16))
         self.label_8.setObjectName("label_8")
-        self.loan1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.loan1.setGeometry(QtCore.QRect(100, 310, 41, 16))
-        self.loan1.setObjectName("loan1")
-        self.loan0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.loan0.setGeometry(QtCore.QRect(150, 310, 61, 20))
-        self.loan0.setObjectName("loan0")
+        self.loanterm = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.loanterm.setGeometry(QtCore.QRect(100, 310, 100, 16))
+        self.loanterm.setObjectName("loanterm")
 
         self.label_9 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_9.setGeometry(QtCore.QRect(10, 350, 55, 16))
         self.label_9.setObjectName("label_9")
-        self.contact1 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.contact1.setGeometry(QtCore.QRect(100, 350, 41, 16))
-        self.contact1.setObjectName("contact1")
-        self.contact0 = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.contact0.setGeometry(QtCore.QRect(150, 350, 61, 20))
-        self.contact0.setObjectName("contact0")
+        self.dtiratio = QtWidgets.QSpinBox(parent=self.groupBox)
+        self.dtiratio.setGeometry(QtCore.QRect(100, 350, 100, 16))
+        self.dtiratio.setObjectName("dtiratio")
 
         self.label_10 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_10.setGeometry(QtCore.QRect(10, 390, 81, 16))
         self.label_10.setObjectName("label_10")
-        self.day = QtWidgets.QSpinBox(parent=self.groupBox)
-        self.day.setGeometry(QtCore.QRect(100, 390, 41, 16))
-        self.day.setObjectName("day")
+
+        self.educationComboBox = QtWidgets.QComboBox(parent=self.groupBox)
+        self.educationComboBox.setGeometry(QtCore.QRect(100, 390, 150, 22))
+        self.educationComboBox.setObjectName("educationComboBox")
+        self.educationComboBox.addItems(["Bachelor's", "High School", "Master's", "PhD"])
 
 
         self.label_12 = QtWidgets.QLabel(parent=self.groupBox)
@@ -333,14 +322,12 @@ class Ui_MainWindow(object):
         self.duration.setGeometry(QtCore.QRect(100, 470, 41, 16))
         self.duration.setObjectName("duration")
 
-
         self.label_13 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_13.setGeometry(QtCore.QRect(10, 510, 55, 16))
         self.label_13.setObjectName("label_13")
         self.campaign = QtWidgets.QSpinBox(parent=self.groupBox)
         self.campaign.setGeometry(QtCore.QRect(100, 510, 41, 16))
         self.campaign.setObjectName("campaign")
-
 
         self.label_14 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_14.setGeometry(QtCore.QRect(10, 550, 55, 16))
@@ -365,7 +352,7 @@ class Ui_MainWindow(object):
         self.ketqua = QtWidgets.QTextEdit(parent=self.groupBox)
         self.ketqua.setGeometry(QtCore.QRect(20, 690, 191, 71))
         self.ketqua.setObjectName("ketqua")
-        
+
         self.chuandoan = QtWidgets.QPushButton(parent=self.groupBox)
         self.chuandoan.setGeometry(QtCore.QRect(70, 630, 93, 28))
         self.chuandoan.setObjectName("chuandoan")
@@ -466,68 +453,63 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Nhóm 8:RandomForest"))
         self.groupBox.setTitle(_translate("MainWindow", "Dự đoán rủi ro tài chính"))
-        self.label.setText(_translate("MainWindow", "Job:"))
 
-        self.nam.setText(_translate("MainWindow", "Yes"))
-        self.nu.setText(_translate("MainWindow", "No"))
+        self.label.setText(_translate("MainWindow", "INCOME:"))
+        self.income.setSpecialValueText("1000000")
 
         self.label_2.setText(_translate("MainWindow", "Age:"))
         self.age.setSpecialValueText("100")
-        
-        self.label_3.setText(_translate("MainWindow", "MARITUAL:"))
-        self.maritual1.setText(_translate("MainWindow", "Yes"))
-        self.maritual0.setText(_translate("MainWindow", "No"))
 
-        self.label_4.setText(_translate("MainWindow", "EDUCATION:"))
-        self.education1.setText(_translate("MainWindow", "Yes"))
-        self.education0.setText(_translate("MainWindow", "No"))
+        self.label_3.setText(_translate("MainWindow", "LOANAMOUNT:"))
+        self.loanamount.setSpecialValueText("1000000")
 
-        self.label_5.setText(_translate("MainWindow", "DEFAULT:"))
-        self.default1.setText(_translate("MainWindow", "Yes"))
-        self.default0.setText(_translate("MainWindow", "No"))
+        self.label_4.setText(_translate("MainWindow", "CREDITSCORE:"))
+        self.creditscore.setSpecialValueText("1000000")
 
-        self.label_6.setText(_translate("MainWindow", "BLANCE:"))
-        self.blance.setSpecialValueText("100")
+        self.label_5.setText(_translate("MainWindow", "MONTHSEMPLOYED:"))
+        self.monthsemployed.setSpecialValueText("1000000")
 
-        self.label_7.setText(_translate("MainWindow", "HOUSING:"))
-        self.housing1.setText(_translate("MainWindow", "Yes"))
-        self.housing0.setText(_translate("MainWindow", "No"))
+        self.label_6.setText(_translate("MainWindow", "NUMCREDITLINES:"))
+        self.numbercreditlines.setSpecialValueText("3")
 
-        self.label_8.setText(_translate("MainWindow", "LOAN:"))
-        self.loan1.setText(_translate("MainWindow", "Yes"))
-        self.loan0.setText(_translate("MainWindow", "No"))
+        self.label_7.setText(_translate("MainWindow", "INTERESTRATE:"))
+        self.interestrate.setSpecialValueText("10000")
 
-        self.label_9.setText(_translate("MainWindow", "CONTACT:"))
-        self.contact1.setText(_translate("MainWindow", "Yes"))
-        self.contact0.setText(_translate("MainWindow", "No"))
 
-        self.label_10.setText(_translate("MainWindow", "DAY:"))
-        self.day.setSpecialValueText("31")
-        
-        self.label_12.setText(_translate("MainWindow", "MONTH:"))
+        self.label_8.setText(_translate("MainWindow", "LOANTERM:"))
+        self.loanterm.setSpecialValueText("10000")
+
+
+        self.label_9.setText(_translate("MainWindow", "DTIRATIO:"))
+        self.dtiratio.setSpecialValueText("10000")
+
+        self.label_10.setText(_translate("MainWindow", "EDUCATION:"))
+        self.educationComboBox.setCurrentText("Bachelor's")
+
+        self.label_12.setText(_translate("MainWindow", "EMPLOYMENTTYPE:"))
         self.month1.setText(_translate("MainWindow", "Yes"))
         self.month0.setText(_translate("MainWindow", "No"))
 
-        self.label_11.setText(_translate("MainWindow", "DURATION:"))
+        self.label_11.setText(_translate("MainWindow", "MARITALSTATUS:"))
         self.duration.setSpecialValueText("100")
 
-        self.label_13.setText(_translate("MainWindow", "CAMPAIGN:"))
+        self.label_13.setText(_translate("MainWindow", "HASMORTGAGE:"))
         self.campaign.setSpecialValueText("100")
 
-        self.label_14.setText(_translate("MainWindow", "PREVIOUS:"))
+        self.label_14.setText(_translate("MainWindow", "HASDEPENDENTS:"))
         self.previous1.setText(_translate("MainWindow", "Yes"))
         self.previous0.setText(_translate("MainWindow", "No"))
 
-        self.label_15.setText(_translate("MainWindow", "DEPOSIT:"))
+        self.label_15.setText(_translate("MainWindow", "LOANPURPOSE:"))
         self.deposit0.setText(_translate("MainWindow", "No"))
         self.deposit1.setText(_translate("MainWindow", "Yes"))
 
         self.chuandoan.setText(_translate("MainWindow", "Chẩn đoán"))
-        
+
         self.label_16.setText(_translate("MainWindow", "Kết quả:"))
-        
+
         self.nhandulieu.setText(_translate("MainWindow", "Nhận dữ liệu đầu vào"))
-        
+
         self.huanluyen.setText(_translate("MainWindow", "Chẩn đoán tập dữ liệu bằng RandomForest"))
         self.label_17.setText(_translate("MainWindow", "4 cây quyết định đầu tiên được tạo:"))
         self.label_18.setText(
@@ -559,9 +541,9 @@ class Ui_MainWindow(object):
 
         # Đặt nhãn cho tiêu đề các cột
         table.setHorizontalHeaderLabels(
-            ["JOB", "AGE", "MARITAL", "EDUCATION", "DEFAULT", "BALANCE", "HOUSING", "FATIGUE",
-             "CONTACT", "DAY", "MONTH", "DURATION", "CAMPAIGN", "PREVIOUS",
-             "DEPOSIT", "LUNG_CANCER"])
+            ["AGE", "INCOME", "LOANAMOUNT", "CREDITSCORE", "MONTHSEMPLOYED", "NUMCREDITLINES", "INTERESTRATE",
+             "LOANTERM","DTIRATIO", "EDUCATION", "EMPLOYMENTTYPE", "MARITALSTATUS",
+             "HASMORTGAGE", "HASDEPENDENTS","LOANPURPOSE", "HASCOSIGNER", "DEFAULT"])
 
         # Thêm bảng vào bố cục (layout) để hiển thị trên giao diện người dùng
         self.bangdulieu.addWidget(table)
@@ -579,13 +561,7 @@ class Ui_MainWindow(object):
         self.recallScore.setPlainText(r)
 
     def chandoan(self):
-        gioitinh = 1 if self.nam.isChecked() else 0
-        maritual = 1 if self.maritual1.isChecked() else 0
-        education = 1 if self.education1.isChecked() else 0
-        default = 1 if self.default1.isChecked() else 0
-        housing = 1 if self.housing1.isChecked() else 0
-        loan = 1 if self.loan1.isChecked() else 0
-        contact = 1 if self.contact1.isChecked() else 0
+
         month = 1 if self.month1.isChecked() else 0
         previous = 1 if self.previous1.isChecked() else 0
         deposit = 1 if self.deposit1.isChecked() else 0
@@ -593,15 +569,23 @@ class Ui_MainWindow(object):
         def get_valid_value(value):
             return max(int(value) - 100, 0)
 
+        dtiratioi = get_valid_value(self.dtiratio.text())
+        loantermi = get_valid_value(self.loanterm.text())
+        interestratei = get_valid_value(self.interestrate.text())
+        monthsemployedi = get_valid_value(self.monthsemployed.text())
+        creditscorei = get_valid_value(self.creditscore.text())
+        loanamounti = get_valid_value(self.loanamount.text())
+        incomei = get_valid_value(self.income.text())
         agei = get_valid_value(self.age.text())
-        blancei = get_valid_value(self.blance.text())
-        dayi = get_valid_value(self.day.text())
+        numbercreditlinesi = get_valid_value(self.numbercreditlines.text())
+        educationi = self.educationComboBox.currentIndex()
         durationi = get_valid_value(self.duration.text())
         campaigni = get_valid_value(self.campaign.text())
 
         chandoann = ''
-        predict = clf.predict([[gioitinh, agei, maritual, education, default, blance, housing, loan, contact,
-                                dayi, month, durationi, campaigni, previous, deposit]])
+        predict = clf.predict([[incomei, agei, loanamounti, creditscorei, monthsemployedi,
+                                numbercreditlinesi, interestratei, loantermi, dtiratioi,
+                                educationi, month, durationi, campaigni, previous, deposit]])
         if (predict == [1]):
             chandoann = "Dự đoán : \n Người này rủi ro tài chính"
         else:
