@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets  # Import các module cần thiết từ PyQt6
 from PyQt6.QtWidgets import QTableWidget, QTableWidgetItem  # Import các widget cụ thể từ PyQt6
 from matplotlib.backends.backend_qt5agg import \
-    FigureCanvasQTAgg as FigureCanvas  # Import FigureCanvas cho việc hiển thị đồ thị trên giao diện
+     FigureCanvasQTAgg as FigureCanvas  # Import FigureCanvas cho việc hiển thị đồ thị trên giao diện
 from sklearn.metrics import roc_curve, auc  # Import các hàm đánh giá mô hình từ sklearn
 from matplotlib.legend_handler import HandlerLine2D  # Import HandlerLine2D để xử lý legend trong biểu đồ
 from sklearn import tree  # Import tree từ sklearn để vẽ cây quyết định
@@ -47,9 +47,7 @@ inputs = df.drop('DEFAULT', axis="columns")
 target = df['DEFAULT']
 ###Huấn luyện dữ liệu
 from sklearn.model_selection import train_test_split
-
 X_train, X_test, Y_train, Y_test = train_test_split(inputs, target, test_size=0.3, random_state=50)
-
 ###Bước: Xây dựng mô hình rừng cây từ tập dữ liệu huấn luyện
 from sklearn.ensemble import RandomForestClassifier
 
@@ -70,15 +68,14 @@ Y_pred = clf.predict(X_test)  # Dự đoán nhãn trên tập kiểm tra
 ###Mức độ quan trọng của các thuộc tính
 inputsss = df.drop('DEFAULT', axis="columns")
 feature_imp = pd.Series(clf.feature_importances_, index=inputsss.columns).sort_values(ascending=False)
+
 # print("\nMức độ quan trọng của các thuộc tính:")
 # print(feature_imp)
-
 ###Bước: đánh giá mô hình
 from sklearn.metrics import accuracy_score, precision_score, recall_score
-
-accuracy = accuracy_score(Y_pred, Y_test)
-precision = precision_score(Y_pred, Y_test)
-recall = recall_score(Y_pred, Y_test)
+accuracy = accuracy_score(Y_pred, Y_test)#độ chính xác
+precision = precision_score(Y_pred, Y_test)#diểm chính xác
+recall = recall_score(Y_pred, Y_test)#điểm thu hồi
 
 
 # print("\nĐánh giá mô hình :")
@@ -285,7 +282,6 @@ class Ui_MainWindow(object):
         self.interestrate.setGeometry(QtCore.QRect(100, 270, 100, 16))
         self.interestrate.setObjectName("interestrate")
 
-
         self.label_8 = QtWidgets.QLabel(parent=self.groupBox)
         self.label_8.setGeometry(QtCore.QRect(10, 310, 55, 16))
         self.label_8.setObjectName("label_8")
@@ -391,13 +387,13 @@ class Ui_MainWindow(object):
         self.label_19 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_19.setGeometry(QtCore.QRect(590, 450, 141, 16))
         self.label_19.setObjectName("label_19")
-        self.verticalLayoutWidget_4 = QtWidgets.QWidget(parent=self.centralwidget)
+        self.verticalLayoutWidget_4 = QtWidgets.QWidget(parent = self.centralwidget)
         self.verticalLayoutWidget_4.setGeometry(QtCore.QRect(400, 450, 350, 341))
         self.verticalLayoutWidget_4.setObjectName("verticalLayoutWidget_4")
         self.hieusuat = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_4)
         self.hieusuat.setContentsMargins(20, 20, 20, 20)
         self.hieusuat.setObjectName("hieusuat")
-        self.verticalLayoutWidget_5 = QtWidgets.QWidget(parent=self.centralwidget)
+        self.verticalLayoutWidget_5 = QtWidgets.QWidget(parent = self.centralwidget)
         self.verticalLayoutWidget_5.setGeometry(QtCore.QRect(800, 450, 350, 341))
         self.verticalLayoutWidget_5.setObjectName("verticalLayoutWidget_5")
         self.doquantrong = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_5)
@@ -632,7 +628,6 @@ class Ui_MainWindow(object):
 
 if __name__ == "__main__":
     import sys
-
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
