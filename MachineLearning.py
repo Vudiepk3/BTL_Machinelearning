@@ -1,23 +1,23 @@
-from PyQt6 import QtCore, QtGui, QtWidgets  # Import các module cần thiết từ PyQt6
-from PyQt6.QtWidgets import QTableWidget, QTableWidgetItem  # Import các widget cụ thể từ PyQt6
+from PyQt6 import QtCore, QtGui, QtWidgets  # Import necessary modules from PyQt6
+from PyQt6.QtWidgets import QTableWidget, QTableWidgetItem  # Import specific widgets from PyQt6
 from matplotlib.backends.backend_qt5agg import \
-     FigureCanvasQTAgg as FigureCanvas  # Import FigureCanvas cho việc hiển thị đồ thị trên giao diện
-from sklearn.metrics import roc_curve, auc  # Import các hàm đánh giá mô hình từ sklearn
-from matplotlib.legend_handler import HandlerLine2D  # Import HandlerLine2D để xử lý legend trong biểu đồ
-from sklearn import tree  # Import tree từ sklearn để vẽ cây quyết định
-import pandas as pd  # Import pandas để xử lý dữ liệu
-import numpy as np  # Import numpy để xử lý các mảng số học
-import matplotlib.pyplot as plt  # Import matplotlib để vẽ biểu đồ
+     FigureCanvasQTAgg as FigureCanvas  # Import FigureCanvas for displaying plots on the interface
+from sklearn.metrics import roc_curve, auc  # Import evaluation metrics functions from sklearn
+from matplotlib.legend_handler import HandlerLine2D  # Import HandlerLine2D for handling legends in plots
+from sklearn import tree  # Import tree from sklearn for decision tree visualization
+import pandas as pd  # Import pandas for data handling
+import numpy as np  # Import numpy for numerical array handling
+import matplotlib.pyplot as plt  # Import matplotlib for plotting
 
-###Bươc thu thập dữ liệu đầu vào
+### Step: Data input collection
 df = pd.read_csv("D:\MachineLearning\datatrain.csv")
-# print("\nNhận dữ liệu đầu vào:")
+# print("\nReceive input data:")
 # print(df)
-# print("Mô tả thống kê dữ liệu đầu vào:")
+# print("Statistical description of input data:")
 # print(df.describe())
 
-###Bước: tiền sử lý dữ liệu
-### các thuộc tính thuộc loại dữ liệu đối tượng. Vì vậy phải chuyển đổi dữ liệu về dạng số hóa
+### Step: Data preprocessing
+### Attributes are of object data type. Therefore, data must be converted to numerical form.
 from sklearn import preprocessing
 
 le = preprocessing.LabelEncoder()
@@ -39,188 +39,189 @@ df['HASDEPENDENTS'] = le.fit_transform(df['HASDEPENDENTS'])
 df['LOANPURPOSE'] = le.fit_transform(df['LOANPURPOSE'])
 df['HASCOSIGNER'] = le.fit_transform(df['HASCOSIGNER'])
 df['DEFAULT'] = le.fit_transform(df['DEFAULT'])
-# print("Tập dữ liệu sau khi chuyển đổi :")
+# print("Dataset after conversion:")
 # print(df)
 
-###Chia tập dữ liệu thành 2 tệp, tệp dữ liệu huấn luyện và tệp dữ liệu thử nghiệm
+### Split dataset into training and testing files
 inputs = df.drop('DEFAULT', axis="columns")
 target = df['DEFAULT']
-###Huấn luyện dữ liệu
+### Train the data
 from sklearn.model_selection import train_test_split
 X_train, X_test, Y_train, Y_test = train_test_split(inputs, target, test_size=0.3, random_state=50)
-###Bước: Xây dựng mô hình rừng cây từ tập dữ liệu huấn luyện
+### Step: Build a tree forest model from the training dataset
 from sklearn.ensemble import RandomForestClassifier
 
 clf = RandomForestClassifier(
-    n_estimators=2000,  # Số lượng cây trong rừng ngẫu nhiên là 2000.
-    max_features=16,  # Số lượng đặc trưng tối đa được xem xét để tách tại mỗi nút trong cây là 16.
-    min_samples_split=3,  # Số lượng mẫu tối thiểu cần thiết để tách một nút là 3.
-    max_depth=16,  # Độ sâu tối đa của mỗi cây là 16.
-    random_state=0  # Hạt giống ngẫu nhiên được sử dụng để khởi tạo bộ sinh số ngẫu nhiên.
+    n_estimators=2000,  # Number of trees in the random forest is 2000.
+    max_features=16,  # Maximum number of features to consider when splitting at each node is 16.
+    min_samples_split=3,  # Minimum number of samples required to split a node is 3.
+    max_depth=16,  # Maximum depth of each tree is 16.
+    random_state=0  # Random seed used to initialize the random number generator.
 )
 
-###Bước: Huấn luyện mô hình
+### Step: Train the model
 clf.fit(X_train, Y_train)
-Y_pred = clf.predict(X_test)  # Dự đoán nhãn trên tập kiểm tra
-# print("Dự đoán với mẫu dữ liệu đầu vào :")
+Y_pred = clf.predict(X_test)  # Predict labels on the test set
+# print("Prediction with input data:")
 # print(Y_pred)
 
-###Mức độ quan trọng của các thuộc tính
+### Importance of attributes
 inputsss = df.drop('DEFAULT', axis="columns")
 feature_imp = pd.Series(clf.feature_importances_, index=inputsss.columns).sort_values(ascending=False)
 
-# print("\nMức độ quan trọng của các thuộc tính:")
+# print("\nImportance of attributes:")
 # print(feature_imp)
-###Bước: đánh giá mô hình
+### Step: Evaluate the model
 from sklearn.metrics import accuracy_score, precision_score, recall_score
-accuracy = accuracy_score(Y_pred, Y_test)#độ chính xác
-precision = precision_score(Y_pred, Y_test)#diểm chính xác
-recall = recall_score(Y_pred, Y_test)#điểm thu hồi
+accuracy = accuracy_score(Y_pred, Y_test)  # Accuracy
+precision = precision_score(Y_pred, Y_test)  # Precision
+recall = recall_score(Y_pred, Y_test)  # Recall
 
-
-# print("\nĐánh giá mô hình :")
-# print("Accuracy:", accuracy) độ chính xác
-# print("Precision:", precision) độ chính xác dương tính
-# print("Recall:", recall) độ phủ
+# print("\nModel evaluation:")
+# print("Accuracy:", accuracy)
+# print("Precision:", precision)
+# print("Recall:", recall)
 class show_tree(FigureCanvas):
     def __init__(self):
-        self.fig, self.ax = plt.subplots()  # Tạo một đối tượng figure và axes.
-        super().__init__(self.fig)  # Khởi tạo lớp cha FigureCanvas với đối tượng figure.
-        plt.close()  # Đóng đối tượng figure (tránh hiển thị không mong muốn).
-        plt.ion()  # Bật chế độ tương tác của matplotlib.
-        self.axes = self.fig.subplots(2, 2)  # Tạo một lưới subplot 2x2.
-        self.ax.set_frame_on(False)  # Loại bỏ khung của axes chính.
-        self.ax.set_xticks([])  # Ẩn các nhãn của trục x.
-        self.ax.set_yticks([])  # Ẩn các nhãn của trục y.
-        for i, ax in enumerate(self.axes.flat):  # Lặp qua từng subplot (axes con) trong lưới 2x2.
-            trees = clf.estimators_[i]  # Lấy cây quyết định thứ i từ mô hình Random Forest.
+        self.fig, self.ax = plt.subplots()  # Create a figure and axes object.
+        super().__init__(self.fig)  # Initialize the FigureCanvas base class with the figure object.
+        plt.close()  # Close the figure object (to prevent unwanted display).
+        plt.ion()  # Turn on matplotlib's interactive mode.
+        self.axes = self.fig.subplots(2, 2)  # Create a 2x2 subplot grid.
+        self.ax.set_frame_on(False)  # Remove frame from the main axes.
+        self.ax.set_xticks([])  # Hide x-axis ticks.
+        self.ax.set_yticks([])  # Hide y-axis ticks.
+        for i, ax in enumerate(self.axes.flat):  # Iterate through each subplot (child axes) in the 2x2 grid.
+            trees = clf.estimators_[i]  # Get the i-th decision tree from the Random Forest model.
             _ = tree.plot_tree(trees, feature_names=None, class_names=None, filled=True,
-                               ax=ax)  # Vẽ cây quyết định lên subplot tương ứng.
-        self.draw()  # Vẽ lại toàn bộ figure để hiển thị các cây quyết định.
+                               ax=ax)  # Plot the decision tree on the corresponding subplot.
+        self.draw()  # Redraw the entire figure to display the decision trees.
+
 
 
 class show_auc(FigureCanvas):
     def __init__(self):
-        self.fig, self.ax = plt.subplots()  # Tạo một đối tượng figure và axes.
-        super().__init__(self.fig)  # Khởi tạo lớp cha FigureCanvas với đối tượng figure.
-        plt.close()  # Đóng đối tượng figure (tránh hiển thị không mong muốn).
-        plt.ion()  # Bật chế độ tương tác của matplotlib.
+        self.fig, self.ax = plt.subplots()  # Create a figure and axes object.
+        super().__init__(self.fig)  # Initialize the FigureCanvas base class with the figure object.
+        plt.close()  # Close the figure object (to prevent unwanted display).
+        plt.ion()  # Turn on matplotlib's interactive mode.
 
-        # Các giá trị khác nhau của n_estimators sẽ được thử nghiệm
+        # Different values of n_estimators to be tested
         n_estimators = [1, 2, 4, 8, 16, 32, 64, 128, 300]
 
-        train_results = []  # Danh sách để lưu trữ kết quả AUC trên tập huấn luyện.
-        test_results = []  # Danh sách để lưu trữ kết quả AUC trên tập kiểm tra.
+        train_results = []  # List to store AUC results on training set.
+        test_results = []  # List to store AUC results on test set.
 
-        # Lặp qua từng giá trị của n_estimators để huấn luyện mô hình và tính toán AUC.
+        # Iterate through each n_estimators value to train the model and calculate AUC.
         for estimator in n_estimators:
             rf = RandomForestClassifier(n_estimators=estimator,
-                                        n_jobs=-1)  # Khởi tạo mô hình RandomForest với số lượng cây tương ứng.
-            rf.fit(X_train, Y_train)  # Huấn luyện mô hình trên tập huấn luyện.
+                                        n_jobs=-1)  # Initialize RandomForest model with corresponding number of trees.
+            rf.fit(X_train, Y_train)  # Train the model on the training set.
 
-            train_pred = rf.predict(X_train)  # Dự đoán trên tập huấn luyện.
+            train_pred = rf.predict(X_train)  # Predict on the training set.
             false_positive_rate, true_positive_rate, thresholds = roc_curve(Y_train,
-                                                                            train_pred)  # Tính FPR và TPR cho ROC curve trên tập huấn luyện.
-            roc_auc = auc(false_positive_rate, true_positive_rate)  # Tính AUC cho ROC curve trên tập huấn luyện.
-            train_results.append(roc_auc)  # Lưu trữ kết quả AUC của tập huấn luyện.
+                                                                            train_pred)  # Compute FPR and TPR for ROC curve on training set.
+            roc_auc = auc(false_positive_rate, true_positive_rate)  # Compute AUC for ROC curve on training set.
+            train_results.append(roc_auc)  # Store AUC result for training set.
 
-            y_pred = rf.predict(X_test)  # Dự đoán trên tập kiểm tra.
+            y_pred = rf.predict(X_test)  # Predict on the test set.
             false_positive_rate, true_positive_rate, thresholds = roc_curve(Y_test,
-                                                                            y_pred)  # Tính FPR và TPR cho ROC curve trên tập kiểm tra.
-            roc_auc = auc(false_positive_rate, true_positive_rate)  # Tính AUC cho ROC curve trên tập kiểm tra.
-            test_results.append(roc_auc)  # Lưu trữ kết quả AUC của tập kiểm tra.
+                                                                            y_pred)  # Compute FPR and TPR for ROC curve on test set.
+            roc_auc = auc(false_positive_rate, true_positive_rate)  # Compute AUC for ROC curve on test set.
+            test_results.append(roc_auc)  # Store AUC result for test set.
 
-        # Vẽ đồ thị AUC cho tập huấn luyện và tập kiểm tra.
+        # Plot AUC curve for training and test sets.
         line1, = self.ax.plot(n_estimators, train_results, "b",
-                              label="Train AUC")  # Vẽ đường biểu diễn AUC của tập huấn luyện.
+                              label="Train AUC")  # Plot line representing AUC of training set.
         line2, = self.ax.plot(n_estimators, test_results, "r",
-                              label="Test AUC")  # Vẽ đường biểu diễn AUC của tập kiểm tra.
+                              label="Test AUC")  # Plot line representing AUC of test set.
 
-        self.fig.legend(handler_map={line1: HandlerLine2D(numpoints=2)})  # Tạo chú thích (legend) cho đồ thị.
-        self.ax.set_ylabel("auc score")  # Đặt nhãn trục y.
-        self.ax.set_xlabel("n_estimators")  # Đặt nhãn trục x.
-        self.fig.suptitle('Area Under The Curve (AUC)', size=8)  # Đặt tiêu đề cho đồ thị.
+        self.fig.legend(handler_map={line1: HandlerLine2D(numpoints=2)})  # Create legend for the plot.
+        self.ax.set_ylabel("auc score")  # Set y-axis label.
+        self.ax.set_xlabel("n_estimators")  # Set x-axis label.
+        self.fig.suptitle('Area Under The Curve (AUC)', size=8)  # Set title for the plot.
 
 
 class show_roc(FigureCanvas):
     def __init__(self):
-        self.fig, self.ax = plt.subplots()  # Tạo một đối tượng figure và axes.
-        super().__init__(self.fig)  # Khởi tạo lớp cha FigureCanvas với đối tượng figure.
-        plt.close()  # Đóng đối tượng figure (tránh hiển thị không mong muốn).
-        plt.ion()  # Bật chế độ tương tác của matplotlib.
+        self.fig, self.ax = plt.subplots()  # Create a figure and axes object.
+        super().__init__(self.fig)  # Initialize the FigureCanvas base class with the figure object.
+        plt.close()  # Close the figure object (to prevent unwanted display).
+        plt.ion()  # Turn on matplotlib's interactive mode.
 
-        # Tính toán các giá trị để vẽ đường cong ROC
+        # Calculate values for ROC curve plotting
         false_positive_rate, true_positive_rate, thresholds = roc_curve(Y_test, Y_pred)
-        roc_auc = auc(false_positive_rate, true_positive_rate)  # Tính AUC cho ROC curve
+        roc_auc = auc(false_positive_rate, true_positive_rate)  # Calculate AUC for ROC curve
 
-        # Vẽ đường cong ROC
+        # Plot ROC curve
         self.ax.plot(false_positive_rate, true_positive_rate, label='ROC Curve (AUC = {:.2f})'.format(roc_auc))
 
-        # Vẽ đường chấm chấm biểu diễn cho dự đoán ngẫu nhiên
+        # Plot dashed line representing random guessing
         self.ax.plot([0, 1], [0, 1], 'k--', label='Random Guess')
 
-        # Thiết lập nhãn trục x và y
-        self.ax.set_xlabel('False Positive Rate')  # Đặt nhãn trục x là "False Positive Rate"
-        self.ax.set_ylabel('True Positive Rate')  # Đặt nhãn trục y là "True Positive Rate"
+        # Set labels for x and y axes
+        self.ax.set_xlabel('False Positive Rate')  # Set x-axis label as "False Positive Rate"
+        self.ax.set_ylabel('True Positive Rate')  # Set y-axis label as "True Positive Rate"
 
-        # Đặt tiêu đề cho đồ thị
+        # Set title for the plot
         self.fig.suptitle('Receiver Operating Characteristic (ROC)',
-                          size=8)  # Đặt tiêu đề cho đồ thị là "Receiver Operating Characteristic (ROC)" với kích thước chữ là 8.
+                          size=8)  # Set title for the plot as "Receiver Operating Characteristic (ROC)" with font size 8.
 
-        # Thêm chú thích vào đồ thị
-        self.fig.legend(loc='lower right')  # Đặt vị trí chú thích ở góc dưới bên phải.
+        # Add legend to the plot
+        self.fig.legend(loc='lower right')  # Set legend position at lower right corner.
 
 
 class show_importance(FigureCanvas):
     def __init__(self):
-        self.fig, self.ax = plt.subplots()  # Tạo một đối tượng figure và axes.
-        super().__init__(self.fig)  # Khởi tạo lớp cha FigureCanvas với đối tượng figure.
-        plt.close()  # Đóng đối tượng figure (tránh hiển thị không mong muốn).
-        plt.ion()  # Bật chế độ tương tác của matplotlib.
+        self.fig, self.ax = plt.subplots()  # Create a figure and axes object.
+        super().__init__(self.fig)  # Initialize the FigureCanvas base class with the figure object.
+        plt.close()  # Close the figure object (to prevent unwanted display).
+        plt.ion()  # Turn on matplotlib's interactive mode.
 
-        # Lấy nhãn và giá trị mức độ quan trọng của các thuộc tính
-        labels = feature_imp.index  # Lấy nhãn từ chỉ số của feature_imp.
-        values = feature_imp  # Lấy giá trị từ feature_imp.
+        # Get labels and importance values of features
+        labels = feature_imp.index  # Get labels from feature_imp index.
+        values = feature_imp  # Get values from feature_imp.
 
-        # Thiết lập trục x và độ rộng của các thanh
-        x = np.arange(len(labels))  # Tạo một mảng số từ 0 đến số lượng nhãn.
-        width = 0.5  # Đặt độ rộng của các thanh là 0.5.
+        # Set x-axis and width of bars
+        x = np.arange(len(labels))  # Create an array of numbers from 0 to number of labels.
+        width = 0.5  # Set width of bars to 0.5.
 
-        # Vẽ biểu đồ thanh ngang
+        # Plot horizontal bar chart
         rects = self.ax.barh(x, values, width,
-                             label="importance")  # Vẽ biểu đồ thanh ngang với nhãn và giá trị mức độ quan trọng.
+                             label="importance")  # Plot horizontal bar chart with labels and feature importance values.
 
-        # Gắn nhãn vào các thanh
-        self.ax.bar_label(rects)  # Thêm nhãn giá trị vào các thanh.
+        # Add labels to the bars
+        self.ax.bar_label(rects)  # Add value labels to the bars.
 
-        # Thiết lập các nhãn cho trục y
-        self.ax.set_yticks(x)  # Đặt các vị trí ticks trên trục y bằng các giá trị của mảng x.
+        # Set labels for y-axis
+        self.ax.set_yticks(x)  # Set y-axis ticks positions with values from array x.
         self.ax.set_yticklabels(['AGE', 'INCOME', 'LOANAMOUNT', 'CREDITSCORE', 'MONTHSEMPLOYED', 'NUMCREDITLINES', "INTERESTRATE",
              'LOANTERM','DTIRATIO', 'EDUCATION', 'EMPLOYMENTTYPE', 'MARITALSTATUS',
-             'HASMORTGAGE', 'HASDEPENDENTS','LOANPURPOSE', 'HASCOSIGNER',])  # Đặt nhãn cho các ticks trên trục y.
+             'HASMORTGAGE', 'HASDEPENDENTS','LOANPURPOSE', 'HASCOSIGNER',])  # Set labels for y-axis ticks.
 
-        # Đặt tiêu đề cho biểu đồ
+        # Set title for the plot
         self.fig.suptitle("Feature Importance Score",
-                          size=8)  # Đặt tiêu đề cho biểu đồ là "Feature Importance Score" với kích thước chữ là 8.
+                          size=8)  # Set title for the plot as "Feature Importance Score" with font size 8.
+
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        # Thiết lập cửa sổ chính
+        # Set up the main window
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1510, 890)
 
-        # Tạo ScrollArea và thiết lập nó làm widget trung tâm
+        # Create a ScrollArea and make it resizable
         self.scrollArea = QtWidgets.QScrollArea(MainWindow)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
 
-        # Tạo widget trung tâm
+        # Create the central widget
         self.centralwidget = QtWidgets.QWidget()
         self.centralwidget.setGeometry(QtCore.QRect(0, 0, 1500, 1500))
         self.centralwidget.setObjectName("centralwidget")
 
-        # Tạo GroupBox cho các điều khiển nhập liệu
+        # Create a GroupBox for input controls
         self.groupBox = QtWidgets.QGroupBox(parent=self.centralwidget)
         self.groupBox.setGeometry(QtCore.QRect(1010, 20, 231, 791))
         font = QtGui.QFont()
@@ -228,7 +229,7 @@ class Ui_MainWindow(object):
         self.groupBox.setFont(font)
         self.groupBox.setObjectName("groupBox")
 
-        # Tạo và thiết lập các nhãn, checkbox, spinbox cho các yếu tố đầu vào
+        # Create and set up labels, checkboxes, spinboxes for input factors
         self.label = QtWidgets.QLabel(parent=self.groupBox)
         self.label.setGeometry(QtCore.QRect(10, 30, 55, 16))
         self.label.setObjectName("label")
